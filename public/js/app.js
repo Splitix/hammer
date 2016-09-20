@@ -18,5 +18,5 @@ angular.module('hammer', ['ui.router'])
         templateUrl: 'templates/profile.html'
     });
     
-    $urlRouterProvider.otherwise('/dash')  
+    $urlRouterProvider.otherwise('/dashboard')  
 });
