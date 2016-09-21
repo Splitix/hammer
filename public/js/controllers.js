@@ -11,7 +11,7 @@ angular.module('hammer.controllers', [])
 {
    
 })
-.controller('ProfileCtrl', function($scope, $state, $sce)
+.controller('ProfileCtrl', function($scope, $state)
 {
     // Set values of variables used in the view
     $scope.FirstName = "Blake";

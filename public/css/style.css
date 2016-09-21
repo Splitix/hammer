@@ -1,11 +1,11 @@
 body {
-    background-color: #9d9d9d;
+    background-color: #fbfbfb;
 }
 
 .container {
     margin: 0 auto;
-    border: 1px solid black;
-    height: 90%;
+    border: 1px solid #000;
     background-color: #fff;
     padding-top: 20px;
+    height: 90%;
 }
