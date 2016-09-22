@@ -4,14 +4,9 @@ angular.module('hammer.controllers', [])
     
 })
 
-.controller('LoginCtrl', function($scope, $state){
+.controller('SignInCtrl', function($scope, $state){
     
 })
-
-.controller('SignUpCtrl', function($scope, $state){
-   
-})
-
 .controller('ProfileCtrl', function($scope, $state){
     // Set values of variables used in the view
     $scope.FirstName = "Blake";

@@ -9,15 +9,10 @@ angular.module('hammer', ['ui.router', 'hammer.controllers'])
         templateUrl: 'templates/dash.html',
         controller: 'DashCtrl'
     })
-    .state('login', {
-        url: '/login',
-        templateUrl: 'templates/login.html',
-        controller: 'LoginCtrl'
-    })
-    .state('signup', {
-        url: '/signup',
-        templateUrl: 'templates/signup.html',
-        controller: 'SignUpCtrl'
+    .state('signin', {
+        url: '/signin',
+        templateUrl: 'templates/signin.html',
+        controller: 'SignInCtrl'
     })
     .state('profile', {
         url: '/profile',
@@ -25,6 +20,6 @@ angular.module('hammer', ['ui.router', 'hammer.controllers'])
         controller: 'ProfileCtrl'
     });
     
-    // Route not found goto /dashboard
+    // Route not found go to /dashboard
     $urlRouterProvider.otherwise('/dashboard');
 });
