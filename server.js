@@ -11,7 +11,7 @@ var app            = express();
 var db = require('./config/db')
 
 // set our port
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 4001;
 
 // connect to our mongoDB database
 //mongoose.connect(db.url); 
