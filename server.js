@@ -3,7 +3,9 @@ var express        = require('express');
 var morgan         = require('morgan');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
+var mongoose       = require('mongoose');
 var app            = express();
+var router         = express.Router();
 
 // configuration ===========================================
 
@@ -30,21 +32,62 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('X-HTTP-Method-Override')); 
 
 // set the static files location /public/img will be /img for users
-app.use(express.static(__dirname + '/public')); 
-
-
-// app.use(express.static(__dirname + '/public')); 	// set the static files location /public/img will be /img for users
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
-//app.use(morgan('dev')); 					// log every request to the console
-//app.use(bodyParser()); 						// pull information from html in POST
-//app.use(methodOverride()); 					// simulate DELETE and PUT
+app.use(express.static(__dirname + '/public')); 
+// Mongoose stuff
 
-app.listen(port);	
-console.log('Simple static server listening on port ' + port); 
+// connect to our mongoDB database
+mongoose.connect('mongodb://localhost/hammer'); 
+// grab the things we need
+var Schema = mongoose.Schema;
 
+// create a schema
+var userSchema = new Schema({
+  name: String,
+  email: String,
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  admin: Boolean,
+  imageuri: String
+});
+
+// the schema is useless so far
+// we need to create a model using it
+var User = mongoose.model('User', userSchema);
+
+// make this available to our users in our Node applications
+module.exports = User;
+
+app.post('/signup', function(req, res, next) {
+    var new_user = new User ({ 
+    name: req.body.name,
+    email :  req.body.email,
+    username: req.body.username,
+    password: req.body.password,
+    admin: false,
+    imageuri: req.body.imageUri
+    });
+
+    try
+    {
+        new_user.save();
+    }
+    catch(error)
+    {
+        return res.json("Failed to create new User.", error);
+    }
+    
+    return res.json("Successfully created new User.");
+    //res.redirect('/');
+});
+
+app.get('/users', function(req, res, next) {
+    res.send(JSON.stringify(User.find({})));
+});
+    
+app.listen(port);
+
+console.log("Server is now listening on port: " + port);
+
+module.exports = router;
 exports = module.exports = app;  
-
-
-
-
-
