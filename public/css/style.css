@@ -1,19 +1,48 @@
-body {
-    background-color: #fbfbfb;
-}
-
-.container {
-    margin: 0 auto;
-    border: 1px solid #000;
-    background-color: #fff;
-    padding-top: 20px;
+.content {
+    padding: 10px;
     min-height: 90%;
     font-weight: normal;
+    margin: 0;
+}
+
+.side-bar {
+    margin: 13px 0px 0px 25px;
+    min-height: 70%;
+    text-align: center;
+    border: 1px solid grey;
+    background-color: fff;
+}
+
+.img-sm {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.text-post-container {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding: 20px;
+    min-height:150px;
+    border: 1px solid grey;
+    background-color: #fff;
+    color: #000;
+}
+
+.text-post-input {
+    display: block;
+    resize: none;
+    min-height:150px;
+    border: 1px solid grey;
+    background-color: #fff;
+    color: #000;
 }
 
 /*Login/Registration View*/
 body{
 	margin:0;
+    background-color: #fbfbfb;
 	color:#6a6f8c;
 	background:#c8c8c8;
 	font:600 16px/18px 'Open Sans',sans-serif;

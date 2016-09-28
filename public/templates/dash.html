@@ -1,15 +1,27 @@
-<div class="row container">
-    <div ng-repeat="post in posts" class="col-sm-12" style="border: 1px solid grey; min-height:150px;  padding:20px; margin:10px;">
-        <div class="col-sm-4" style="padding-top:20px;">
-            <div class="col-sm-12" style="text-align: center;">
-                <img ng-src="{{post.imageUri}}" style="width: 50px; height: 50px; border-radius: 50%; text-align: center;" />
-            </div>
-            <div class="col-sm-12" style="text-align: center;">
-                {{post.author}}
-            </div>
+<div class="row">
+    <div class="col-sm-3 hidden-xs side-bar">
+        
+    </div>
+    <div class="col-sm-8 col-xs-12 content">
+        <div>
+            <form class="col-sm-9 col-xs-12 input-group" style="display: block;">
+                <textarea max-length="256" placeholder="What's hammerin'?" class="form-control text-post-input"></textarea>
+                <br />
+                <button class="btn btn-primary col-xs-12 col-sm-4" style="margin:10px 0px 10px 0px; float: right;" type="submit">Hammer Time!</button>
+            </form>
         </div>
-        <div class="col-sm-8"  style="padding-top:35px;">
-            {{post.body}}
+        <div ng-repeat="post in posts" class="col-sm-9 col-xs-12 text-post-container">
+            <div class="col-sm-3" style="padding: 5px; text-align: center;">
+                <div class="col-sm-12">
+                    <img class="img-sm" ng-src="{{post.imageUri}}" />
+                </div>
+                <div class="col-sm-12">
+                    {{post.author}}
+                </div>
+            </div>
+            <div class="col-sm-9" style="padding: 15px;">
+                {{post.body}}
+            </div>
         </div>
     </div>
 </div>

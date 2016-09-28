@@ -8,8 +8,7 @@ angular.module('hammer.controllers', [])
     author: "Bob Ross", imageUri : "http://www.bobrosslipsum.com/images/bob-ross-cutout.png"},
     {body: "Hammer is super cool.", author: "Joshua Galindo", imageUri : "http://placekitten.com/200/200/"},
     {body: "Testing out this user post.", author: "Blake Bordovsky", imageUri : "http://placekitten.com/200/200/"},
-    {body: "If you didn't have baby clouds, you wouldn't have big clouds. Don't fiddle with it all day. Just go out and talk to a tree. Make friends with it. It looks so good, I might as well not stop. Let's put some happy trees and bushes back in here.",
-    author: "Bob Ross", imageUri : "http://www.bobrosslipsum.com/images/bob-ross-cutout.png"},
+    {body: "The chicken noodles in Harris Hall were satisfactory.", author: "Jason Flinn", imageUri : "http://placekitten.com/200/200/"},
     {body: "San Marcos is flooding super bad right now!", author: "Blake Bordovsky", imageUri : "http://placekitten.com/200/200/"},
     {body: "Project Hammer is using the MEAN stack.", author: "Joshua Galindo", imageUri : "http://placekitten.com/200/200/"}];
 })
