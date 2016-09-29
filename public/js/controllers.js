@@ -1,8 +1,9 @@
-angular.module('hammer.controllers', ['ngCookies'])
+angular.module('hammer.controllers', [])
 
-.controller('DashCtrl', function($scope, $state, $http, $cookies){
+.controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService){
     
-    $scope.UserLoggedIn = $cookies.get('token') !== undefined;
+    // Check if user is signed in    
+    $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
     // Some mockup posts
     $scope.posts = [
@@ -15,7 +16,10 @@ angular.module('hammer.controllers', ['ngCookies'])
     {body: "Project Hammer is using the MEAN stack.", author: "Joshua Galindo", imageUri : "http://placekitten.com/200/200/"}];
 })
 
-.controller('SignInCtrl', function($scope, $state, $http, $cookies){
+.controller('SignInCtrl', function($scope, $state, $http, $rootScope, UserService){
+
+    // Check if user is signed in
+    $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
     $scope.signInFormData = {};
     $scope.signUpFormData = {};
@@ -29,8 +33,7 @@ angular.module('hammer.controllers', ['ngCookies'])
         })
         .success(function(data) {
             if(data.status == 200) {
-                console.log(data.success);
-                $scope.SetToken(data.token);
+                UserService.SetToken(data.token);
                 $state.go('dash');
             }
             else {
@@ -48,8 +51,7 @@ angular.module('hammer.controllers', ['ngCookies'])
         })
         .success(function(data) {
             if(data.status == 200) {
-                console.log(data.success);
-                $scope.SetToken(data.token);
+                UserService.SetToken(data.token);
                 $state.go('dash');
             }
             else {
@@ -58,16 +60,18 @@ angular.module('hammer.controllers', ['ngCookies'])
         });
     };
 
-
-    $scope.SetToken = function(token) {
-        var today = new Date();
-        var expired = new Date(today);
-        expired.setDate(today.getDate() + 1); //Set expired date to tomorrow
-        $cookies.put('token', token, {expires : expired });
-    }
-
+    $scope.SignOut = function() {
+        UserService.SignOut();
+        $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
+        //Refresh page
+        $state.go('signin');
+    };
 })
-.controller('ProfileCtrl', function($scope, $state, $http, $cookies){
+.controller('ProfileCtrl', function($scope, $state, $http, $rootScope, UserService) {
+
+    // Check if user is signed in
+    $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
+
     // Set values of variables used in the view
     $scope.FirstName = "Blake";
     $scope.LastName = "Bordovsky";
