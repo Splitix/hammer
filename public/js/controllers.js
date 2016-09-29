@@ -2,6 +2,8 @@ angular.module('hammer.controllers', ['ngCookies'])
 
 .controller('DashCtrl', function($scope, $state, $http, $cookies){
     
+    $scope.UserLoggedIn = $cookies.get('token') !== undefined;
+
     // Some mockup posts
     $scope.posts = [
     {body: "We'll throw some old gray clouds in here just sneaking around and having fun. Tree trunks grow however makes them happy. That's what painting is all about. It should make you feel good when you paint. Just pretend you are a whisper floating across a mountain. We need dark in order to show light. With something so strong, a little bit can go a long way.",
@@ -29,7 +31,7 @@ angular.module('hammer.controllers', ['ngCookies'])
             if(data.status == 200) {
                 console.log(data.success);
                 $scope.SetToken(data.token);
-                //$state.go('/#/dashboard');
+                $state.go('dash');
             }
             else {
                 console.log(data.error);
@@ -48,7 +50,7 @@ angular.module('hammer.controllers', ['ngCookies'])
             if(data.status == 200) {
                 console.log(data.success);
                 $scope.SetToken(data.token);
-                //$state.go('/#/dashboard');
+                $state.go('dash');
             }
             else {
                 console.log(data.error);
