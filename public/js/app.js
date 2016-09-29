@@ -1,6 +1,6 @@
 angular.module('hammer', ['ui.router', 'hammer.controllers'])
 
-.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
     
     // Views and Routes
     $stateProvider
@@ -22,7 +22,4 @@ angular.module('hammer', ['ui.router', 'hammer.controllers'])
     
     // Route not found go to /dashboard
     $urlRouterProvider.otherwise('/dashboard');
-
-    // Remove /# from urls
-    $locationProvider.html5Mode(true);
 });
