@@ -78,7 +78,8 @@ app.post('/signup', function(req, res) {
                     
                     var response = {
                         status  : 200,
-                        success : 'Successfully Signed Up as: ' + req.body.name
+                        success : 'Successfully Signed Up as: ' + req.body.name,
+                        token   : encryptPassword(new_user.username + new_user.password)
                     }
                     res.end(JSON.stringify(response));
                 }
@@ -86,7 +87,7 @@ app.post('/signup', function(req, res) {
                 {
                     var response = {
                         status  : 500,
-                        error : 'A user already exists with this username.'
+                        error   : 'A user already exists with this username.'
                     }
                     res.end(JSON.stringify(response));
                 }
@@ -95,7 +96,7 @@ app.post('/signup', function(req, res) {
         else {
             var response = {
                 status  : 500,
-                error : 'Password must be at least 6 characters.'
+                error   : 'Password must be at least 6 characters.'
             }
             res.end(JSON.stringify(response));
         }
@@ -106,7 +107,7 @@ app.post('/signup', function(req, res) {
        console.log(err);
        var response = {
             status  : 500,
-            error : 'Fatal error during Sign Up.'
+            error   : 'Fatal error during Sign Up.'
         }
         res.end(JSON.stringify(response));
     }
@@ -118,23 +119,32 @@ app.post('/signin', function(req, res) {
     {
         // Check if user exists in DB
         User.findOne({username: req.body.username}, 'name password', function (err, user) {
-            var isMatch = bcrypt.compareSync(req.body.password, user.password);
-            if(user === null || err || !isMatch)
+            if(user === null)
             {
                 var response = {
                     status  : 500,
-                    error : 'Username or password combination not found or was incorrect.'
+                    error : 'Username or password combination not found.'
                 }
                 res.end(JSON.stringify(response));
             }
             else {
-                // TODO: Create a session to keep user signed in
-                
-                var response = {
-                    status  : 200,
-                    success : 'Successfully Signed In as: ' + user.name
+                var isMatch = bcrypt.compareSync(req.body.password, user.password);
+                if(err || !isMatch)
+                {   
+                    var response = {
+                        status  : 501,
+                        error : 'Username or password combination was incorrect.'
+                    }
+                    res.end(JSON.stringify(response));
                 }
-                res.end(JSON.stringify(response));
+                else {
+                    var response = {
+                        status  : 200,
+                        success : 'Successfully Signed In as: ' + user.name,
+                        token   : encryptPassword(user.username + user.password)
+                    }
+                    res.end(JSON.stringify(response));
+                }
             }
         });
     }

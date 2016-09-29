@@ -1,6 +1,6 @@
-angular.module('hammer.controllers', [])
+angular.module('hammer.controllers', ['ngCookies'])
 
-.controller('DashCtrl', function($scope, $state){
+.controller('DashCtrl', function($scope, $state, $http, $cookies){
     
     // Some mockup posts
     $scope.posts = [
@@ -13,10 +13,59 @@ angular.module('hammer.controllers', [])
     {body: "Project Hammer is using the MEAN stack.", author: "Joshua Galindo", imageUri : "http://placekitten.com/200/200/"}];
 })
 
-.controller('SignInCtrl', function($scope, $state){
-    
+.controller('SignInCtrl', function($scope, $state, $http, $cookies){
+
+    $scope.signInFormData = {};
+    $scope.signUpFormData = {};
+
+    $scope.SignIn = function() {
+        $http({
+        method  : 'POST',
+        url     : '/signin',
+        data    : $.param($scope.signInFormData),  // pass in data as strings
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            if(data.status == 200) {
+                console.log(data.success);
+                $scope.SetToken(data.token);
+                //$state.go('/#/dashboard');
+            }
+            else {
+                console.log(data.error);
+            }
+        });
+    };
+
+    $scope.SignUp = function() {
+        $http({
+        method  : 'POST',
+        url     : '/signup',
+        data    : $.param($scope.signUpFormData),  // pass in data as strings
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+        })
+        .success(function(data) {
+            if(data.status == 200) {
+                console.log(data.success);
+                $scope.SetToken(data.token);
+                //$state.go('/#/dashboard');
+            }
+            else {
+                console.log(data.error);
+            }
+        });
+    };
+
+
+    $scope.SetToken = function(token) {
+        var today = new Date();
+        var expired = new Date(today);
+        expired.setDate(today.getDate() + 1); //Set expired date to tomorrow
+        $cookies.put('token', token, {expires : expired });
+    }
+
 })
-.controller('ProfileCtrl', function($scope, $state){
+.controller('ProfileCtrl', function($scope, $state, $http, $cookies){
     // Set values of variables used in the view
     $scope.FirstName = "Blake";
     $scope.LastName = "Bordovsky";
