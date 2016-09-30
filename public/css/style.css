@@ -5,12 +5,15 @@
     margin: 0;
 }
 
+@media (min-width: 768px) {
+	.side-bar {
+		margin-left: 25px;
+		min-height: 70%;
+	}
+}
+
 .side-bar {
-    margin: 10px 0px 0px 25px;
-    min-height: 70%;
-    text-align: center;
-    border: 1px solid grey;
-    background-color: fff;
+	padding: 0px;
 }
 
 .img-sm {
@@ -20,23 +23,10 @@
     text-align: center;
 }
 
-.text-post-container {
-    margin-top: 3px;
-    margin-bottom: 3px;
-    padding: 20px;
-    min-height:150px;
-    border: 1px solid grey;
-    background-color: #fff;
-    color: #000;
-}
-
 .text-post-input {
     display: block;
     resize: none;
     min-height:150px;
-    border: 1px solid grey;
-    background-color: #fff;
-    color: #000;
 }
 
 /*Login/Registration View*/
@@ -45,7 +35,6 @@ body{
     background-color: #fbfbfb;
 	color:#6a6f8c;
 	background:#c8c8c8;
-	font:600 16px/18px 'Open Sans',sans-serif;
 }
 *,:after,:before{box-sizing:border-box}
 .clearfix:after,.clearfix:before{content:'';display:table}
@@ -195,7 +184,7 @@ a{color:inherit;text-decoration:none}
 	        transform:rotate(0);
 }
 
-.hr{
+.sign-in-htm .hr, sign-up-htm .hr{
 	height:2px;
 	margin:60px 0 50px 0;
 	background:rgba(255,255,255,.2);

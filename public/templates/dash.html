@@ -1,16 +1,22 @@
 <div class="row">
-    <div class="col-sm-3 hidden-xs side-bar">
-        <h2 ng-if="IsUserSignedIn" class="text-success">User is Signed In!</h2>
+    <div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
+        <div class="panel-heading" style="text-align: center; font-weight: bold;">
+            <a href="https://github.com/Splitix/hammer">Project Hammer Github</a>
+        </div>
+        <div class="panel-body">
+            <span ng-if="IsUserSignedIn" class="text-success">User is Signed In!</span>
+        </div>            
     </div>
-    <div class="col-sm-8 col-xs-12 content">
+    
+    <div class="col-sm-8 col-xs-12 panel-group">
         <div>
-            <form class="col-sm-9 col-xs-12 input-group" style="display: block;">
+            <form class="col-sm-9 col-xs-12 input-group">
                 <textarea max-length="256" placeholder="What's hammerin'?" class="form-control text-post-input"></textarea>
                 <br />
-                <button class="btn btn-primary col-xs-12 col-sm-4" style="margin:10px 0px 10px 0px; float: right;" type="submit">Hammer Time!</button>
+                <button class="btn btn-primary col-xs-12 col-sm-4" style="float: right; margin-top: 5px;" type="submit">Hammer Time!</button>
             </form>
         </div>
-        <div ng-repeat="post in posts" class="col-sm-9 col-xs-12 text-post-container">
+        <div ng-repeat="post in posts" class="col-sm-9 col-xs-12 panel panel-default">
             <div class="col-sm-3" style="padding: 5px; text-align: center;">
                 <div class="col-sm-12">
                     <img class="img-sm" ng-src="{{post.imageUri}}" />
