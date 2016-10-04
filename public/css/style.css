@@ -29,6 +29,10 @@
     min-height:150px;
 }
 
+.loading {
+	text-align: center;
+}
+
 /*Login/Registration View*/
 body{
 	margin:0;
