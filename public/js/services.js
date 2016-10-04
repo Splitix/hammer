@@ -1,8 +1,12 @@
 angular.module('hammer.services', ['ngCookies'])
-.service('UserService', function($cookies) {
+.service('LoginService', function() {
 
-    this.IsUserSignedIn = function() {
-        return $cookies.get('token') !== undefined;
+    this.Signin = function(userLogin) {
+        return $http.post('/signin', $.param(userLogin));
+    }
+
+    this.SignUp = function(userRegister) {
+        return $http.post('/signup', $.param(userRegister));
     }
 
     this.SignOut = function() {
@@ -15,4 +19,12 @@ angular.module('hammer.services', ['ngCookies'])
         expired.setDate(today.getDate() + 1); //Set expired date to tomorrow
         $cookies.put('token', token, {expires : expired });
     }
+})
+
+.service('UserService', function($cookies) {
+
+    this.IsUserSignedIn = function() {
+        return $cookies.get('token') !== undefined;
+    }
+    
 });

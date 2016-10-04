@@ -5,17 +5,17 @@
             <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
             <div class="login-form">
                 <div class="sign-in-htm">
-                    <form ng-submit="SignIn()">
+                    <form ng-submit="signIn()">
                         <div class="group">
                             <label for="user" class="label">Username</label>
-                            <input id="user" ng-model="signInFormData.username" type="text" class="input">
+                            <input id="user" ng-model="userLogin.username" type="text" class="input">
                         </div>
                         <div class="group">
                             <label for="pass" class="label">Password</label>
-                            <input id="pass" ng-model="signInFormData.password" type="password" class="input" data-type="password">
+                            <input id="pass" ng-model="userLogin.password" type="password" class="input" data-type="password">
                         </div>
                         <div class="group">
-                            <input id="check" ng-model="signInFormData.keepsignedin" type="checkbox" class="check">
+                            <input id="check" ng-model="userLogin.keepSignedIn" type="checkbox" class="check">
                             <label for="check"><span class="icon"></span> Keep me Signed in</label>
                         </div>
                         <div class="group">
@@ -28,22 +28,22 @@
                     </div>
                 </div>
                 <div class="sign-up-htm">
-                    <form ng-submit="SignUp()">
+                    <form ng-submit="signUp()">
                         <div class="group">
                             <label for="user" class="label">Username</label>
-                            <input id="user" ng-model="signUpFormData.username" type="text" class="input">
+                            <input id="user" ng-model="registerUser.username" type="text" class="input">
                         </div>
                         <div class="group">
                             <label for="pass" class="label">Password</label>
-                            <input id="pass" type="password" class="input" data-type="password">
+                            <input id="pass" ng-model="registerUser.password" type="password" class="input" data-type="password">
                         </div>
                         <div class="group">
                             <label for="pass" class="label">Repeat Password</label>
-                            <input id="pass" ng-model="signUpFormData.password" type="password" class="input" data-type="password">
+                            <input id="pass" ng-model="registerUser.passwordConfirm" type="password" class="input" data-type="password">
                         </div>
                     <div class="group">
                             <label for="user" class="label">Full Name</label>
-                            <input id="user" ng-model="signUpFormData.name" type="text" class="input">
+                            <input id="user" ng-model="registerUser.name" type="text" class="input">
                         </div>
                         <!--  <div class="group">
                             <label for="pass" class="label">Email Address</label>
@@ -67,7 +67,7 @@
         <span ng-if="IsUserSignedIn">
 		    <input id="tab-3" type="radio" class="sign-in" checked><label for="tab-3" class="tab">Sign Out</label>
             <div class="login-form" ng-if="IsUserSignedIn">
-                <form ng-submit="SignOut()">
+                <form ng-submit="signOut()">
                     <div class="group">
                         <input type="submit" class="button" value="Sign Out">
                     </div>

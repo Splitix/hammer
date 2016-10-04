@@ -16,56 +16,52 @@ angular.module('hammer.controllers', [])
     {body: "Project Hammer is using the MEAN stack.", author: "Joshua Galindo", imageUri : "http://placekitten.com/200/200/"}];
 })
 
-.controller('SignInCtrl', function($scope, $state, $http, $rootScope, UserService){
+.controller('SignInCtrl', function($scope, $state, $http, $rootScope, UserService, LoginService){
 
     // Check if user is signed in
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
-    $scope.signInFormData = {};
-    $scope.signUpFormData = {};
+    $scope.userLogin = {};
+    $scope.registerUser = {};
 
-    $scope.SignIn = function() {
-        $http({
-        method  : 'POST',
-        url     : '/signin',
-        data    : $.param($scope.signInFormData),  // pass in data as strings
-        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+    //Login function - Sends the users login info to the Signin function call on the service.js page
+    //The username and token is returned upon a successful login
+    //After the user is redirected to the dashboard screen
+    $scope.signIn = function() {
+        LoginService.Signin($scope.userLogin).success(function(data){
+            LoginService.SetToken(data.token);
+            $state.go('dash');
+        }).error(function(err){
+            console.log("Signin Error:");
+            console.log(err);
         })
-        .success(function(data) {
-            if(data.status == 200) {
-                UserService.SetToken(data.token);
-                $state.go('dash');
-            }
-            else {
-                console.log(data.error);
-            }
-        });
     };
 
-    $scope.SignUp = function() {
-        $http({
-        method  : 'POST',
-        url     : '/signup',
-        data    : $.param($scope.signUpFormData),  // pass in data as strings
-        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
-        })
-        .success(function(data) {
-            if(data.status == 200) {
-                UserService.SetToken(data.token);
+    //Registering function - Sends users information to the SignUp function call on the service.js page
+    //This information is user to register the user in the Database for the first time.
+    //If a user exists then an error is sent back.
+    $scope.signUp = function() {
+        if(registerUser.password === registerUser.passwordConfirm){
+            LoginService.SignUp().success(function(data){
+                LoginService.SetToken(data.token);
                 $state.go('dash');
-            }
-            else {
-                console.log(data.error);
-            }
-        });
-    };
+            }).error(function(err){
+                console.log("SignUp Error:");
+                console.log(err);
+            })
+        }else{
+            console.log("Passwords Don't Match. Please try again.")
+        }
+    }
 
-    $scope.SignOut = function() {
-        UserService.SignOut();
+    //Logout function - removes the users token so they have to sign back in to user the site again. 
+    $scope.signOut = function() {
+        LoginService.SignOut();
         $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
         //Refresh page
         $state.go('signin');
     };
+
 })
 .controller('ProfileCtrl', function($scope, $state, $http, $rootScope, UserService) {
 
