@@ -1,4 +1,4 @@
-angular.module('hammer', ['ui.router', 'hammer.controllers', 'hammer.services'])
+angular.module('hammer', ['ui.router', 'hammer.controllers', 'hammer.services', 'hammer.directives'])
 
 .config(function($stateProvider, $urlRouterProvider) {
     
