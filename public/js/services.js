@@ -1,4 +1,5 @@
 angular.module('hammer.services', ['ngCookies'])
+
 .service('LoginService', function() {
 
     this.Signin = function(userLogin) {
@@ -13,15 +14,20 @@ angular.module('hammer.services', ['ngCookies'])
         $cookies.remove('token');
     }
 
-    this.SetToken = function(token) {
+    this.SetToken = function(token, username) {
         var today = new Date();
         var expired = new Date(today);
         expired.setDate(today.getDate() + 1); //Set expired date to tomorrow
+        $cookies.put('username', username, {expires : expired });        
         $cookies.put('token', token, {expires : expired });
     }
 })
 
 .service('UserService', function($cookies) {
+
+    this.GetCurrentUserName = function() {
+        return $cookies.get('username');
+    }
 
     this.IsUserSignedIn = function() {
         return $cookies.get('token') !== undefined;

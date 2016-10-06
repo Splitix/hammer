@@ -52,8 +52,16 @@ var userSchema = new Schema({
 
 var User = mongoose.model('User', userSchema);
 
-// API Endpoints ===========================================
+var postSchema = new Schema({
+  username: { type: String, required: true },
+  body: { type: String, required: true },
+  createdOn : Date
+});
 
+var Post = mongoose.model('Post', postSchema);
+
+// API Endpoints ===========================================
+// SignUp, Sign In/Out ==============================
 app.post('/signup', function(req, res) {
     
     try
@@ -165,8 +173,73 @@ app.get('/signout', function (req, res) {
   res.redirect('/signin');
 });
 
+// Posts =======================
+app.get('/allPosts', function(req, res) {
+    Post.find({}, function(err, posts) {
+    var all_posts = {};
+
+    posts.forEach(function(post) {
+      all_posts[post._id] = post;
+    });
+
+    res.send(all_posts);
+  });
+});
+
+app.post('/createPost', function(req, res) {
+    try
+    {
+        // Check if user exists in DB
+        User.findOne({username: req.body.username}, 'username', function (err, user) {
+            if(user === null)
+            {
+                var response = {
+                    status  : 500,
+                    error : 'User not found, please sign in.'
+                }
+                res.end(JSON.stringify(response));
+            }
+            else 
+            {
+                // Create and save new post
+                var new_post = new Post ({ 
+                    username: req.body.username,
+                    body: req.body.body,
+                    createdOn: Date.now
+                });
+                
+                new_post.save();
+
+                var response = {
+                    status  : 200,
+                    success : 'Post created successfully'
+                }
+                res.end(JSON.stringify(response));
+            }
+        });
+    }
+    catch(err)
+    {
+        console.log(err);
+        var response = {
+            status  : 500,
+            error : 'Fatal error during Create Post.'
+        }
+        
+        res.end(JSON.stringify(response));
+    }
+});
+
 app.get('/users', function(req, res) {
-    res.end();
+    User.find({}, function(err, users) {
+    var userMap = {};
+
+    users.forEach(function(user) {
+      userMap[user._id] = user;
+    });
+
+    res.send(userMap);  
+  });
 });
 
 // Server Start ===========================================
