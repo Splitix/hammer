@@ -1,16 +1,13 @@
 angular.module('hammer.controllers', [])
 
-.controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService){
+.controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService){
     
     // Check if user is signed in    
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
-    $scope.GetAllPosts = function() {
+    $scope.getAllPosts = function() {
         $scope.loading = true;
-        $http({
-        method: 'GET',
-        url: '/allPosts'
-        }).then(function successCallback(response) {
+        PostService.GetAllPosts().then(function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
             console.log("Successfully retrieved posts", response.data);
@@ -28,7 +25,6 @@ angular.module('hammer.controllers', [])
                 {body: "San Marcos is flooding super bad right now!", name: "Blake Bordovsky", imageUri : "http://placekitten.com/200/200/"},
                 {body: "Project Hammer is using the MEAN stack.", name: "Joshua Galindo", imageUri : "http://placekitten.com/200/200/"}];
             }
-            
         }, function errorCallback(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
@@ -36,17 +32,12 @@ angular.module('hammer.controllers', [])
         });
     }
 
-    $scope.GetAllPosts();
+    $scope.getAllPosts();
     $scope.testPostFormData = {};
     $scope.testPostFormData.username = UserService.GetCurrentUserName();
 
-    $scope.CreatePost = function() {
-        $http({
-        method  : 'POST',
-        url     : '/createPost',
-        data    : $.param($scope.testPostFormData),  // pass in data as strings
-        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
-        })
+    $scope.createPost = function() {
+        PostService.CreatePost($scope.testPostFormData)
         .success(function(data) {
             if(data.status == 200) {
                 console.log(data.success);
@@ -72,7 +63,7 @@ angular.module('hammer.controllers', [])
     //After the user is redirected to the dashboard screen
     $scope.signIn = function() {
         LoginService.Signin($scope.userLogin).success(function(data){
-            LoginService.SetToken(data.token, $scope.signInFormData.username);
+            LoginService.SetToken(data.token, $scope.userLogin.username);
             $state.go('dash');
         }).error(function(err){
             console.log("Signin Error:");
@@ -84,8 +75,8 @@ angular.module('hammer.controllers', [])
     //This information is user to register the user in the Database for the first time.
     //If a user exists then an error is sent back.
     $scope.signUp = function() {
-        if(registerUser.password === registerUser.passwordConfirm){
-            LoginService.SignUp().success(function(data){
+        if($scope.registerUser.password === $scope.registerUser.passwordConfirm){
+            LoginService.SignUp($scope.registerUser).success(function(data){
                 LoginService.SetToken(data.token);
                 $state.go('dash');
             }).error(function(err){

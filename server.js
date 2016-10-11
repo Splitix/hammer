@@ -48,7 +48,7 @@ var userSchema = new Schema({
   password: { type: String, required: true },
   admin: Boolean,
   imageuri: String
-});
+};
 
 var User = mongoose.model('User', userSchema);
 
@@ -166,11 +166,6 @@ app.post('/signin', function(req, res) {
         
         res.end(JSON.stringify(response));
     }
-});
-
-app.get('/signout', function (req, res) {
-  delete req.session.user_id;
-  res.redirect('/signin');
 });
 
 // Posts =======================
