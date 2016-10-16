@@ -200,7 +200,7 @@ app.post('/createPost', function(req, res) {
                 var new_post = new Post ({ 
                     username: req.body.username,
                     body: req.body.body,
-                    createdOn: Date.now
+                    createdOn: new Date()
                 });
                 
                 new_post.save();
