@@ -42,7 +42,7 @@ angular.module('hammer.controllers', [])
         .success(function(data) {
             if(data.status == 200) {
                 console.log(data.success);
-                $state.go('dash');                
+                location.reload();
             }
             else {
                 console.log(data.error);
