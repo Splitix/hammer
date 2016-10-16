@@ -12,6 +12,7 @@ angular.module('hammer.controllers', [])
             // when the response is available
             console.log("Successfully retrieved posts", response.data);
             $scope.posts = response.data;
+            $scope.placeholderImage = "http://placekitten.com/200/200/";
             $scope.loading = false;
             if(JSON.stringify($scope.posts) === JSON.stringify({})){
                 // Some mockup posts
@@ -47,6 +48,18 @@ angular.module('hammer.controllers', [])
                 console.log(data.error);
             }
         });
+    }
+
+    $scope.formatDate = function(date) {
+        var date = new Date(date);
+        var months = [
+        "January", "February", "March", "April", "May", "June", 
+        "July", "August", "September", "October", "November", "December"
+        ];
+
+
+        return date.toLocaleTimeString() + ' ' + 
+            months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
     }
 })
 

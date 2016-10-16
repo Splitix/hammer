@@ -171,14 +171,10 @@ app.post('/signin', function(req, res) {
 // Posts =======================
 app.get('/allPosts', function(req, res) {
     Post.find({}, function(err, posts) {
-    var all_posts = {};
-
-    posts.forEach(function(post) {
-      all_posts[post._id] = post;
+         res.send(
+             posts.sort(function(a, b) { return a.createdOn < b.createdOn })
+        ); 
     });
-
-    res.send(all_posts);
-  });
 });
 
 app.post('/createPost', function(req, res) {
@@ -197,7 +193,7 @@ app.post('/createPost', function(req, res) {
             else 
             {
                 // Create and save new post
-                var new_post = new Post ({ 
+                var new_post = new Post ({
                     username: req.body.username,
                     body: req.body.body,
                     createdOn: new Date()
@@ -223,18 +219,6 @@ app.post('/createPost', function(req, res) {
         
         res.end(JSON.stringify(response));
     }
-});
-
-app.get('/users', function(req, res) {
-    User.find({}, function(err, users) {
-    var userMap = {};
-
-    users.forEach(function(user) {
-      userMap[user._id] = user;
-    });
-
-    res.send(userMap);  
-  });
 });
 
 // Server Start ===========================================
