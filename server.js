@@ -30,7 +30,7 @@ app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 // Mongoose stuff ===========================================
 // connect to our mongoDB database
-mongoose.connect('mongodb://localhost/hammer');
+mongoose.connect('mongodb://joshuagalindo.com/hammer');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -48,7 +48,7 @@ var userSchema = new Schema({
   password: { type: String, required: true },
   admin: Boolean,
   imageuri: String
-};
+});
 
 var User = mongoose.model('User', userSchema);
 
