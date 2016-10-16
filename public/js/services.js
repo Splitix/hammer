@@ -3,19 +3,19 @@ angular.module('hammer.services', ['ngCookies'])
 
     this.Signin = function(userLogin) {
         return $http({
-        method  : 'POST',
-        url     : '/signin',
-        data    : $.param(userLogin),
-        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+            method  : 'POST',
+            url     : '/signin',
+            data    : $.param(userLogin),
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
 
     this.SignUp = function(userRegister) {
         return $http({
-        method  : 'POST',
-        url     : '/signup',
-        data    : $.param(userRegister),
-        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+            method  : 'POST',
+            url     : '/signup',
+            data    : $.param(userRegister),
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
 
@@ -46,17 +46,17 @@ angular.module('hammer.services', ['ngCookies'])
 
     this.GetAllPosts = function() {
         return $http({
-        method  : 'GET',
-        url     : '/allPosts'
+            method  : 'GET',
+            url     : '/allPosts'
         });
     }
 
     this.CreatePost = function(postData) {
         return $http({
-        method  : 'POST',
-        url     : '/createPost',
-        data    : $.param(postData),
-        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+            method  : 'POST',
+            url     : '/createPost',
+            data    : $.param(postData),
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
 });

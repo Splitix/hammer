@@ -38,25 +38,35 @@ body{
 	margin:0;
     background-color: #fbfbfb;
 	color:#6a6f8c;
-	background:#c8c8c8;
+	/*background:#c8c8c8;*/
+	background:url(http://wallpapercave.com/wp/9oStOW4.jpg) no-repeat fixed center;
+	background-size: 100%;
 }
 *,:after,:before{box-sizing:border-box}
 .clearfix:after,.clearfix:before{content:'';display:table}
 .clearfix:after{clear:both;display:block}
 a{color:inherit;text-decoration:none}
 
+.login-form input{
+   text-align:center;
+}
+
+.input:focus {
+   outline:none;
+}
+
 .login-wrap{
 	width:100%;
 	margin:auto;
 	max-width:525px;
-	min-height:670px;
+	min-height:110%;
 	position:relative;
-	background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
-	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+	/*background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;*/
+	/*box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);*/
 }
 .login-html{
 	width:100%;
-	height:100%;
+	height:120%;
 	position:absolute;
 	padding:90px 70px 50px 70px;
 	background:rgba(40,57,101,.9);
