@@ -64,6 +64,13 @@ angular.module('hammer.services', ['ngCookies'])
         });
     }
 
+    this.GetUserPosts = function(username) {
+        return $http({
+        method  : 'GET',
+        url     : '/userPosts?username=' + username 
+        });
+    }
+
     this.CreatePost = function(postData) {
         return $http({
         method  : 'POST',
