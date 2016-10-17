@@ -10,7 +10,7 @@ angular.module('hammer.controllers', [])
         PostService.GetAllPosts().then(function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
-            console.log("Successfully retrieved posts", response.data);
+            console.log("Successfully retrieved posts.");
             $scope.posts = response.data;
             $scope.placeholderImage = "http://placekitten.com/200/200/";
             $scope.loading = false;
@@ -76,8 +76,15 @@ angular.module('hammer.controllers', [])
     //After the user is redirected to the dashboard screen
     $scope.signIn = function() {
         LoginService.Signin($scope.userLogin).success(function(data){
-            LoginService.SetToken(data.token, $scope.userLogin.username);
-            $state.go('dash');
+            if(data.status == 200)
+            {
+                LoginService.SetToken(data.token, $scope.userLogin.username);
+                $state.go('dash');
+            }
+            else
+            {
+                console.log(data.error);
+            }
         }).error(function(err){
             console.log("Signin Error:");
             console.log(err);
@@ -90,8 +97,15 @@ angular.module('hammer.controllers', [])
     $scope.signUp = function() {
         if($scope.registerUser.password === $scope.registerUser.passwordConfirm){
             LoginService.SignUp($scope.registerUser).success(function(data){
-                LoginService.SetToken(data.token);
-                $state.go('dash');
+                if(data.status == 200)
+                {
+                    LoginService.SetToken(data.token, $scope.userLogin.username);
+                    $state.go('dash');
+                }
+                else
+                {
+                    console.log(data.error);
+                }
             }).error(function(err){
                 console.log("SignUp Error:");
                 console.log(err);

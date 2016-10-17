@@ -136,7 +136,12 @@ app.post('/signin', function(req, res) {
                 res.end(JSON.stringify(response));
             }
             else {
-                var isMatch = bcrypt.compareSync(req.body.password, user.password);
+                var isMatch = false;
+                if(req.body.password !== undefined)
+                {
+                    isMatch = bcrypt.compareSync(req.body.password, user.password);
+                }
+                
                 if(err || !isMatch)
                 {   
                     var response = {
