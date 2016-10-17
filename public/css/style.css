@@ -23,6 +23,12 @@
     text-align: center;
 }
 
+.img-md {
+    width: 200px;
+    height: 200px;
+}
+
+
 .text-post-input {
     display: block;
     resize: none;

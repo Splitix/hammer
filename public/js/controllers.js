@@ -2,6 +2,10 @@ angular.module('hammer.controllers', [])
 
 .controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService){
     
+    $scope.placeholderImage = "http://placekitten.com/200/200/";
+    $scope.placeholderImage2 = "http://placekitten.com/400/400/";
+
+
     // Check if user is signed in    
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
@@ -12,7 +16,6 @@ angular.module('hammer.controllers', [])
             // when the response is available
             console.log("Successfully retrieved posts.");
             $scope.posts = response.data;
-            $scope.placeholderImage = "http://placekitten.com/200/200/";
             $scope.loading = false;
             if(JSON.stringify($scope.posts) === JSON.stringify({})){
                 // Some mockup posts
