@@ -147,8 +147,6 @@ angular.module('hammer.controllers', [])
     // Check if user is signed in
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
-    $scope.placeholderImage = "http://placekitten.com/200/200/";
-    $scope.posts = [];
     $scope.getPosts = function() {
         $scope.loading = true;
         PostService.GetUserPosts(UserService.GetCurrentUserName()).then(function successCallback(response) {
@@ -164,6 +162,41 @@ angular.module('hammer.controllers', [])
             $scope.loading = false;
         });
     }
+
+    $scope.getUserInfo = function() {
+        var username = UserService.GetCurrentUserName();
+        var token = UserService.GetToken();
+
+        UserService.GetUserInfo(username, token)
+        .then(function successCallback(response) {
+            $scope.UserInfo = response.data;
+            
+        }, function errorCallback(response) {
+            console.log(response.data.error);
+        });
+    }
+
+    $scope.previewFile = function() {
+        var file    = document.querySelector('input[type=file]').files[0]; //same as here
+        var reader  = new FileReader();
+
+        reader.onloadend = function () {
+            $scope.profilePicture = reader.result;               
+        }
+
+        if (file) {
+            reader.readAsDataURL(file); //reads the data as a URL
+        } else {
+            $scope.profilePicture = $scope.placeholderImage;
+        }
+    }
     
+    $scope.placeholderImage = "http://placekitten.com/200/200/";
+    $scope.profilePicture = $scope.placeholderImage;
+
+    $scope.posts = [];
+    $scope.UserInfo = {};
+
     $scope.getPosts();
+    $scope.getUserInfo();
 });

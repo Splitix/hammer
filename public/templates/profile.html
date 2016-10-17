@@ -1,66 +1,45 @@
-<div class="row container">
-    <div class="col-sm-12">
-        <div class="col-sm-4">
-            <!-- Profile picture -->
-            <!-- <img ng-src="{{ImageUri}}" style="width: 200px; height: 200px;"/> -->
-            <input type="file" onchange="previewFile()"><br/>
-            <img src="" height="200" alt="Profile image">
-            <br/> <!-- Break line -->
-            <span style="font-weight: bold;">Name: </span>
-            <!-- Variable to be replaced by the controller -->
-            <span>{{FirstName}} {{LastName}}</span>
-
+<div class="row">
+    <div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
+        <div class="panel-heading" style="text-align: center; font-weight: bold;">
+            {{ UserInfo.name }}
         </div>
-
-        <div class="col-sm-8">
-            <h2 ng-show="loading" class="col-sm-9 loading">
-                <img src="img/loading.gif" alt="LOADING..." />
-                LOADING...
-            </h2>
-            <div ng-if="posts.length == 0">
-                <div class="col-sm-12 panel panel-default">
-                    <div class="col-sm-12" style="padding: 35px; text-align: center;">
-                        You have no posts.
-                    </div>  
-                </div>
+        <div class="panel-body">
+            <div class="col-sm-12">
+                <img class="img-md" ng-src="{{ placeholderImage }}" />
+            </div>       
+            <span class="col-sm-12">Username: {{ UserInfo.username }}</span>
+            <input type="file" ng-click="previewFile()" />
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <h2 ng-show="loading" class="col-sm-9 loading">
+            <img src="img/loading.gif" alt="LOADING..." />
+            LOADING...
+        </h2>
+        <div ng-if="posts.length == 0">
+            <div class="col-sm-12 panel panel-default">
+                <div class="col-sm-12" style="padding: 35px; text-align: center;">
+                    You have no posts.
+                </div>  
             </div>
-            <div ng-if="posts.length != 0">
-                <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-12 panel panel-default">
-                    <div class="col-sm-3" style="padding: 5px; text-align: center;">
-                        <div class="col-sm-12">
-                            <img class="img-sm" ng-src="{{ placeholderImage }}" />
-                        </div>
-                        <div class="col-sm-12">
-                            {{ post.username }}
-                        </div>
+        </div>
+        <div ng-if="posts.length != 0">
+            <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-12 panel panel-default">
+                <div class="col-sm-3" style="padding: 5px; text-align: center;">
+                    <div class="col-sm-12">
+                        <img class="img-sm" ng-src="{{ placeholderImage }}" />
                     </div>
-                    <div class="col-sm-9" style="padding: 15px;">
-                        {{ post.body }}
+                    <div class="col-sm-12">
+                        {{ post.username }}
                     </div>
-                    <div style="padding-bottom: 5px; float: right;">
-                        {{ formatDate(post.createdOn) }}
-                    </div>
+                </div>
+                <div class="col-sm-9" style="padding: 15px;">
+                    {{ post.body }}
+                </div>
+                <div style="padding-bottom: 5px; float: right;">
+                    {{ formatDate(post.createdOn) }}
                 </div>
             </div>
         </div>
-
-    <script>
-        function previewFile(){
-            var preview = document.querySelector('img'); //selects the query named img
-            var file    = document.querySelector('input[type=file]').files[0]; //sames as here
-            var reader  = new FileReader();
-
-            reader.onloadend = function () {
-                preview.src = reader.result;
-            }
-
-            if (file) {
-                reader.readAsDataURL(file); //reads the data as a URL
-            } else {
-                preview.src = "";
-            }
-        }
-    </script>
-
     </div>
 </div>
