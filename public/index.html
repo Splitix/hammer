@@ -30,7 +30,7 @@
 
 	</head>
 	<body ng-app="hammer">
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -60,6 +60,11 @@
       </div>
     </nav>
     <div ui-view></div>
+    <!-- Script that Randomizes the background -->
+    <script type="text/javascript">
+      var images = ['bg-01.jpg', 'bg-02.jpg', 'bg-03.jpg', 'bg-04.jpg'];
+      $('body').css({'background-image': 'url(img/' + images[Math.floor(Math.random() *      images.length)] + ')'});
+    </script>
 	</body>
 </html>
     
