@@ -142,13 +142,28 @@ angular.module('hammer.controllers', [])
     };
 
 })
-.controller('ProfileCtrl', function($scope, $state, $http, $rootScope, UserService) {
+.controller('ProfileCtrl', function($scope, $state, $http, $rootScope, UserService, PostService) {
 
     // Check if user is signed in
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
-    // Set values of variables used in the view
-    $scope.FirstName = "Blake";
-    $scope.LastName = "Bordovsky";
-    $scope.ImageUri = "http://placekitten.com/200/200/";
+    $scope.placeholderImage = "http://placekitten.com/200/200/";
+    $scope.posts = [];
+    $scope.getPosts = function() {
+        $scope.loading = true;
+        PostService.GetUserPosts(UserService.GetCurrentUserName()).then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+            console.log("Successfully retrieved posts for user.");
+            $scope.posts = response.data;
+            $scope.loading = false;
+
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            $scope.loading = false;
+        });
+    }
+    
+    $scope.getPosts();
 });

@@ -13,8 +13,26 @@
         </div>
 
         <div class="col-sm-8">
-            <!-- My Posts?????????!?!??? -->
-
+            <h2 ng-show="loading" class="col-sm-9 loading">
+                <img src="img/loading.gif" alt="LOADING..." />
+                LOADING...
+            </h2>
+            <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-12 panel panel-default">
+                <div class="col-sm-3" style="padding: 5px; text-align: center;">
+                    <div class="col-sm-12">
+                        <img class="img-sm" ng-src="{{ placeholderImage }}" />
+                    </div>
+                    <div class="col-sm-12">
+                        {{ post.username }}
+                    </div>
+                </div>
+                <div class="col-sm-9" style="padding: 15px;">
+                    {{ post.body }}
+                </div>
+                <div style="padding-bottom: 5px; float: right;">
+                    {{ formatDate(post.createdOn) }}
+                </div>
+            </div>
         </div>
 
     <script>

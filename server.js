@@ -182,9 +182,17 @@ app.get('/allPosts', function(req, res) {
     });
 });
 
+app.get('/userPosts', function(req, res) {
+    Post.find({ username: req.query.username }, function(err, posts) {
+         res.send(
+             posts.sort(function(a, b) { return a.createdOn < b.createdOn })
+        );
+    });
+});
+
 // Profile
 app.post('/userInfo', function(req, res) {
-    User.findOne({username: req.body.username}, 'username password name imageuri', function (err, user) {
+    User.findOne({username: req.body.username}, 'username password email name imageuri', function (err, user) {
         
         if(user === null)
         {
@@ -207,6 +215,7 @@ app.post('/userInfo', function(req, res) {
             var userInfo = { 
                 name: user.name,
                 username: user.username,
+                email: user.email,
                 imageuri: user.imageUri
             };
 
