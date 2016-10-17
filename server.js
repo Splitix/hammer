@@ -141,7 +141,7 @@ app.post('/signin', function(req, res) {
                 {
                     isMatch = bcrypt.compareSync(req.body.password, user.password);
                 }
-                
+
                 if(err || !isMatch)
                 {   
                     var response = {
@@ -178,10 +178,50 @@ app.get('/allPosts', function(req, res) {
     Post.find({}, function(err, posts) {
          res.send(
              posts.sort(function(a, b) { return a.createdOn < b.createdOn })
-        ); 
+        );
     });
 });
 
+// Profile
+app.post('/userInfo', function(req, res) {
+    User.findOne({username: req.body.username}, 'username password name imageuri', function (err, user) {
+        
+        if(user === null)
+        {
+            var response = {
+                status  : 500,
+                error : 'User not found, please sign in.'
+            }
+            res.end(JSON.stringify(response));
+            return;
+        }
+
+        var isMatch = true; // false by default
+        // if(req.body.token !== null)
+        // {
+        //     isMatch = bcrypt.compareSync(user.username + user.password, req.body.token);
+        // }
+
+        if(isMatch)
+        {
+            var userInfo = { 
+                name: user.name,
+                username: user.username,
+                imageuri: user.imageUri
+            };
+
+            res.send(JSON.stringify(userInfo));
+        }
+        else
+        {
+            var response = {
+                    status  : 501,
+                    error : 'User token was incorrect please signin again.'
+            }
+            res.end(JSON.stringify(response));
+        }
+    });
+});
 app.post('/createPost', function(req, res) {
     try
     {
@@ -195,7 +235,7 @@ app.post('/createPost', function(req, res) {
                 }
                 res.end(JSON.stringify(response));
             }
-            else 
+            else
             {
                 // Create and save new post
                 var new_post = new Post ({

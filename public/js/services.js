@@ -3,19 +3,19 @@ angular.module('hammer.services', ['ngCookies'])
 
     this.Signin = function(userLogin) {
         return $http({
-            method  : 'POST',
-            url     : '/signin',
-            data    : $.param(userLogin),
-            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        method  : 'POST',
+        url     : '/signin',
+        data    : $.param(userLogin),
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
 
     this.SignUp = function(userRegister) {
         return $http({
-            method  : 'POST',
-            url     : '/signup',
-            data    : $.param(userRegister),
-            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        method  : 'POST',
+        url     : '/signup',
+        data    : $.param(userRegister),
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
 
@@ -32,31 +32,44 @@ angular.module('hammer.services', ['ngCookies'])
         $cookies.put('token', token, {expires : expired });
     }
 })
-.service('UserService', function($cookies) {
+.service('UserService', function($cookies, $http) {
 
     this.GetCurrentUserName = function() {
         return $cookies.get('username');
     }
 
+    this.GetToken = function() {
+        return $cookies.get('token');
+    }
+
     this.IsUserSignedIn = function() {
         return $cookies.get('token') !== undefined;
-    }    
+    }
+
+    this.GetUserInfo = function(username, token) {
+        return $http({
+            method  : 'POST',
+            url     : '/userInfo',
+            data    : $.param({username: username, token: token}),
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+    }
 })
 .service('PostService', function($http) {
 
     this.GetAllPosts = function() {
         return $http({
-            method  : 'GET',
-            url     : '/allPosts'
+        method  : 'GET',
+        url     : '/allPosts'
         });
     }
 
     this.CreatePost = function(postData) {
         return $http({
-            method  : 'POST',
-            url     : '/createPost',
-            data    : $.param(postData),
-            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        method  : 'POST',
+        url     : '/createPost',
+        data    : $.param(postData),
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
 });

@@ -33,7 +33,22 @@ angular.module('hammer.controllers', [])
         });
     }
 
+    $scope.getUserInfo = function() {
+        var username = UserService.GetCurrentUserName();
+        var token = UserService.GetToken();
+
+        UserService.GetUserInfo(username, token)
+        .then(function successCallback(response) {
+            $scope.UserInfo = response.data;
+            
+        }, function errorCallback(response) {
+            console.log(response.data.error);
+        });
+    }
+
     $scope.getAllPosts();
+    $scope.getUserInfo();
+    $scope.UserInfo = {};
     $scope.testPostFormData = {};
     $scope.testPostFormData.username = UserService.GetCurrentUserName();
 

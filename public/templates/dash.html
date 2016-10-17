@@ -4,7 +4,13 @@
             <a href="https://github.com/Splitix/hammer">Project Hammer Github</a>
         </div>
         <div class="panel-body">
-            <span ng-if="IsUserSignedIn" class="text-success">User is Signed In!</span>
+            <span ng-if="IsUserSignedIn" style="font-weight: bold; text-align: center;">
+                <div class="col-sm-12">
+                    <img ng-src="{{ placeholderImage }}" />
+                </div>       
+                <span class="col-sm-12">Username: {{ UserInfo.username }}</span>            
+                <span class="col-sm-12">Name: {{ UserInfo.name }}</span>
+            </span>
         </div>            
     </div>
     
