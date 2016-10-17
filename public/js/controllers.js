@@ -117,7 +117,7 @@ angular.module('hammer.controllers', [])
             LoginService.SignUp($scope.registerUser).success(function(data){
                 if(data.status == 200)
                 {
-                    LoginService.SetToken(data.token, $scope.userLogin.username);
+                    LoginService.SetToken(data.token, $scope.registerUser.username);
                     $state.go('dash');
                 }
                 else
