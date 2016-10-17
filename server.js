@@ -30,7 +30,7 @@ app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 // Mongoose stuff ===========================================
 // connect to our mongoDB database
-mongoose.connect('mongodb://localhost/hammer');
+mongoose.connect('mongodb://joshuagalindo.com/hammer');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -48,7 +48,7 @@ var userSchema = new Schema({
   password: { type: String, required: true },
   admin: Boolean,
   imageuri: String
-};
+});
 
 var User = mongoose.model('User', userSchema);
 
@@ -136,7 +136,12 @@ app.post('/signin', function(req, res) {
                 res.end(JSON.stringify(response));
             }
             else {
-                var isMatch = bcrypt.compareSync(req.body.password, user.password);
+                var isMatch = false;
+                if(req.body.password !== undefined)
+                {
+                    isMatch = bcrypt.compareSync(req.body.password, user.password);
+                }
+
                 if(err || !isMatch)
                 {   
                     var response = {
@@ -171,16 +176,52 @@ app.post('/signin', function(req, res) {
 // Posts =======================
 app.get('/allPosts', function(req, res) {
     Post.find({}, function(err, posts) {
-    var all_posts = {};
-
-    posts.forEach(function(post) {
-      all_posts[post._id] = post;
+         res.send(
+             posts.sort(function(a, b) { return a.createdOn < b.createdOn })
+        );
     });
-
-    res.send(all_posts);
-  });
 });
 
+// Profile
+app.post('/userInfo', function(req, res) {
+    User.findOne({username: req.body.username}, 'username password name imageuri', function (err, user) {
+        
+        if(user === null)
+        {
+            var response = {
+                status  : 500,
+                error : 'User not found, please sign in.'
+            }
+            res.end(JSON.stringify(response));
+            return;
+        }
+
+        var isMatch = true; // false by default
+        // if(req.body.token !== null)
+        // {
+        //     isMatch = bcrypt.compareSync(user.username + user.password, req.body.token);
+        // }
+
+        if(isMatch)
+        {
+            var userInfo = { 
+                name: user.name,
+                username: user.username,
+                imageuri: user.imageUri
+            };
+
+            res.send(JSON.stringify(userInfo));
+        }
+        else
+        {
+            var response = {
+                    status  : 501,
+                    error : 'User token was incorrect please signin again.'
+            }
+            res.end(JSON.stringify(response));
+        }
+    });
+});
 app.post('/createPost', function(req, res) {
     try
     {
@@ -194,13 +235,13 @@ app.post('/createPost', function(req, res) {
                 }
                 res.end(JSON.stringify(response));
             }
-            else 
+            else
             {
                 // Create and save new post
-                var new_post = new Post ({ 
+                var new_post = new Post ({
                     username: req.body.username,
                     body: req.body.body,
-                    createdOn: Date.now
+                    createdOn: new Date()
                 });
                 
                 new_post.save();
@@ -223,18 +264,6 @@ app.post('/createPost', function(req, res) {
         
         res.end(JSON.stringify(response));
     }
-});
-
-app.get('/users', function(req, res) {
-    User.find({}, function(err, users) {
-    var userMap = {};
-
-    users.forEach(function(user) {
-      userMap[user._id] = user;
-    });
-
-    res.send(userMap);  
-  });
 });
 
 // Server Start ===========================================

@@ -2,6 +2,10 @@ angular.module('hammer.controllers', [])
 
 .controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService){
     
+    $scope.placeholderImage = "http://placekitten.com/200/200/";
+    $scope.placeholderImage2 = "http://placekitten.com/400/400/";
+
+
     // Check if user is signed in    
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
@@ -10,7 +14,7 @@ angular.module('hammer.controllers', [])
         PostService.GetAllPosts().then(function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
-            console.log("Successfully retrieved posts", response.data);
+            console.log("Successfully retrieved posts.");
             $scope.posts = response.data;
             $scope.loading = false;
             if(JSON.stringify($scope.posts) === JSON.stringify({})){
@@ -32,7 +36,22 @@ angular.module('hammer.controllers', [])
         });
     }
 
+    $scope.getUserInfo = function() {
+        var username = UserService.GetCurrentUserName();
+        var token = UserService.GetToken();
+
+        UserService.GetUserInfo(username, token)
+        .then(function successCallback(response) {
+            $scope.UserInfo = response.data;
+            
+        }, function errorCallback(response) {
+            console.log(response.data.error);
+        });
+    }
+
     $scope.getAllPosts();
+    $scope.getUserInfo();
+    $scope.UserInfo = {};
     $scope.testPostFormData = {};
     $scope.testPostFormData.username = UserService.GetCurrentUserName();
 
@@ -41,12 +60,24 @@ angular.module('hammer.controllers', [])
         .success(function(data) {
             if(data.status == 200) {
                 console.log(data.success);
-                $state.go('dash');                
+                location.reload();
             }
             else {
                 console.log(data.error);
             }
         });
+    }
+
+    $scope.formatDate = function(date) {
+        var date = new Date(date);
+        var months = [
+        "January", "February", "March", "April", "May", "June", 
+        "July", "August", "September", "October", "November", "December"
+        ];
+
+
+        return date.toLocaleTimeString() + ' ' + 
+            months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
     }
 })
 
@@ -63,8 +94,15 @@ angular.module('hammer.controllers', [])
     //After the user is redirected to the dashboard screen
     $scope.signIn = function() {
         LoginService.Signin($scope.userLogin).success(function(data){
-            LoginService.SetToken(data.token, $scope.userLogin.username);
-            $state.go('dash');
+            if(data.status == 200)
+            {
+                LoginService.SetToken(data.token, $scope.userLogin.username);
+                $state.go('dash');
+            }
+            else
+            {
+                console.log(data.error);
+            }
         }).error(function(err){
             console.log("Signin Error:");
             console.log(err);
@@ -77,8 +115,15 @@ angular.module('hammer.controllers', [])
     $scope.signUp = function() {
         if($scope.registerUser.password === $scope.registerUser.passwordConfirm){
             LoginService.SignUp($scope.registerUser).success(function(data){
-                LoginService.SetToken(data.token);
-                $state.go('dash');
+                if(data.status == 200)
+                {
+                    LoginService.SetToken(data.token, $scope.userLogin.username);
+                    $state.go('dash');
+                }
+                else
+                {
+                    console.log(data.error);
+                }
             }).error(function(err){
                 console.log("SignUp Error:");
                 console.log(err);

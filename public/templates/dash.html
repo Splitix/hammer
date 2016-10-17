@@ -4,14 +4,20 @@
             <a href="https://github.com/Splitix/hammer">Project Hammer Github</a>
         </div>
         <div class="panel-body">
-            <span ng-if="IsUserSignedIn" class="text-success">User is Signed In!</span>
+            <span ng-if="IsUserSignedIn" style="font-weight: bold; text-align: center;">
+                <div class="col-sm-12">
+                    <img class="img-md" ng-src="{{ placeholderImage2 }}" />
+                </div>       
+                <span class="col-sm-12">Username: {{ UserInfo.username }}</span>            
+                <span class="col-sm-12">Name: {{ UserInfo.name }}</span>
+            </span>
         </div>            
     </div>
     
     <div class="col-sm-8 col-xs-12 panel-group">
         <div>
             <form class="col-sm-9 col-xs-12 input-group" ng-submit="createPost()">
-                <textarea max-length="256" placeholder="What's hammerin'?" ng-model="testPostFormData.body" class="form-control text-post-input"></textarea>
+                <textarea max-length="256" placeholder="Nail down your thoughts..." ng-model="testPostFormData.body" class="form-control text-post-input"></textarea>
                 <br />
                 <button class="btn btn-primary col-xs-12 col-sm-4" style="float: right; margin-top: 5px;" type="submit">Hammer Time!</button>
             </form>
@@ -20,17 +26,20 @@
                 <img src="img/loading.gif" alt="LOADING..." />
                 LOADING...
             </h2>
-        <div ng-repeat="post in posts" class="col-sm-9 col-xs-12 panel panel-default">
+        <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-9 col-xs-12 panel panel-default">
             <div class="col-sm-3" style="padding: 5px; text-align: center;">
                 <div class="col-sm-12">
-                    <img class="img-sm" ng-src="{{post.imageUri}}" />
+                    <img class="img-sm" ng-src="{{ placeholderImage }}" />
                 </div>
                 <div class="col-sm-12">
-                    {{post.name}}
+                    {{ post.username }}
                 </div>
             </div>
             <div class="col-sm-9" style="padding: 15px;">
-                {{post.body}}
+                {{ post.body }}
+            </div>
+            <div style="padding-bottom: 5px; float: right;">
+                {{ formatDate(post.createdOn) }}
             </div>
         </div>
     </div>
