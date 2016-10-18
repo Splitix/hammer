@@ -6,7 +6,7 @@
         <div class="panel-body">
             <span ng-if="IsUserSignedIn" style="font-weight: bold; text-align: center;">
                 <div class="col-sm-12">
-                    <img class="img-md" ng-src="{{ placeholderImage2 }}" />
+                    <img class="img-md" ng-src="{{ placeholderImage }}" />
                 </div>       
                 <span class="col-sm-12">Username: {{ UserInfo.username }}</span>            
                 <span class="col-sm-12">Name: {{ UserInfo.name }}</span>
@@ -24,8 +24,16 @@
                 <img class="img-sm" ng-src="{{ placeholderImage }}" />
             </div>
             <div class="col-sm-12">
-                {{ user.username }}
+                {{ user.name }}          
+                <br />
+                ({{ user.username }})
             </div>
+            <div class="col-sm-12">
+                <button class="btn btn-primary">
+                    <span ng-show="!IsFollowing(user.username)">Follow</span>
+                    <span ng-show="IsFollowing(user.username)">Unfollow</span>
+                </button>
+            </div>  
         </div>
     </div>
 </div>

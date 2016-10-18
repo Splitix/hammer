@@ -50,6 +50,11 @@
                 <span class="glyphicon glyphicon-user"></span> My Profile
               </a>
             </li>
+            <li ng-if="IsUserSignedIn">                          
+               <a href="/#/following">
+                <span class="glyphicon glyphicon-eye-open"></span> Following
+              </a>
+            </li>
             <li ng-if="IsUserSignedIn">
               <a href="/#/signin">
                 <span class="glyphicon glyphicon-log-in"></span> Sign Out

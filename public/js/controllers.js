@@ -206,12 +206,14 @@ angular.module('hammer.controllers', [])
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
     $scope.getAllUsers = function() {
+        $scope.loading = true;        
         UserService.GetAllUsers()
         .then(function successCallback(response) {
                 $scope.allUsers = response.data;
-                
+                $scope.loading = false;
             }, function errorCallback(response) {
                 console.log(response.data);
+                $scope.loading = false;                
         });   
     }
 
@@ -225,13 +227,38 @@ angular.module('hammer.controllers', [])
         });   
     }
 
+    $scope.getUserInfo = function() {
+        var username = UserService.GetCurrentUserName();
+        var token = UserService.GetToken();
+
+        UserService.GetUserInfo(username, token)
+        .then(function successCallback(response) {
+            $scope.UserInfo = response.data;
+            
+        }, function errorCallback(response) {
+            console.log(response.data.error);
+        });
+    }
+
     $scope.placeholderImage = "http://placekitten.com/200/200/";
-
-    $scope.following = [];
+    
+    $scope.following = {};
     $scope.allUsers = {};
-
+    $scope.UserInfo = {};
+    
     $scope.getAllUsers();
     $scope.getFollowing();
+    $scope.getUserInfo();
 
-    
+    $scope.IsFollowing = function(username) {
+        var flag = false;
+        for(var user in $scope.following)
+        {
+            if($scope.following[user].username == username){
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
 });
