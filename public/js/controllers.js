@@ -199,4 +199,39 @@ angular.module('hammer.controllers', [])
 
     $scope.getPosts();
     $scope.getUserInfo();
+})
+.controller('FollowCtrl', function($scope, $state, $http, $rootScope, UserService) {
+    
+    // Check if user is signed in
+    $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
+
+    $scope.getAllUsers = function() {
+        UserService.GetAllUsers()
+        .then(function successCallback(response) {
+                $scope.allUsers = response.data;
+                
+            }, function errorCallback(response) {
+                console.log(response.data);
+        });   
+    }
+
+    $scope.getFollowing = function() {
+        UserService.GetFollowing(UserService.GetCurrentUserName())
+        .then(function successCallback(response) {
+                $scope.following = response.data;
+                
+            }, function errorCallback(response) {
+                console.log(response.data);
+        });   
+    }
+
+    $scope.placeholderImage = "http://placekitten.com/200/200/";
+
+    $scope.following = [];
+    $scope.allUsers = {};
+
+    $scope.getAllUsers();
+    $scope.getFollowing();
+
+    
 });

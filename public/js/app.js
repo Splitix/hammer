@@ -18,6 +18,11 @@ angular.module('hammer', ['ui.router', 'hammer.controllers', 'hammer.services', 
         url: '/profile',
         templateUrl: 'templates/profile.html',
         controller: 'ProfileCtrl'
+    })
+    .state('following', {
+        url: '/following',
+        templateUrl: 'templates/follow.html',
+        controller: 'FollowCtrl'
     });
     
     // Route not found go to /dashboard

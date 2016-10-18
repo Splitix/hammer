@@ -54,6 +54,20 @@ angular.module('hammer.services', ['ngCookies'])
             headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
+
+    this.GetAllUsers = function() {
+        return $http({
+            method  : 'GET',
+            url     : '/users'
+        });
+    }
+    
+    this.GetFollowing = function(username) {
+        return $http({
+            method  : 'GET',
+            url     : '/following?username=' + username
+        });
+    }
 })
 .service('PostService', function($http) {
 

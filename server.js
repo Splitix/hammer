@@ -47,7 +47,8 @@ var userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   admin: Boolean,
-  imageuri: String
+  imageuri: String,
+  following: String
 });
 
 var User = mongoose.model('User', userSchema);
@@ -79,7 +80,8 @@ app.post('/signup', function(req, res) {
                         username: req.body.username,
                         password: encryptPassword(req.body.password),
                         admin: false,
-                        imageuri: req.body.imageUri
+                        imageuri: req.body.imageUri,
+                        following: '[]'
                     });
                     
                     new_user.save();
@@ -190,47 +192,6 @@ app.get('/userPosts', function(req, res) {
     });
 });
 
-// Profile
-app.post('/userInfo', function(req, res) {
-    User.findOne({username: req.body.username}, 'username password email name imageuri', function (err, user) {
-        
-        if(user === null)
-        {
-            var response = {
-                status  : 500,
-                error : 'User not found, please sign in.'
-            }
-            res.end(JSON.stringify(response));
-            return;
-        }
-
-        var isMatch = true; // false by default
-        // if(req.body.token !== null)
-        // {
-        //     isMatch = bcrypt.compareSync(user.username + user.password, req.body.token);
-        // }
-
-        if(isMatch)
-        {
-            var userInfo = { 
-                name: user.name,
-                username: user.username,
-                email: user.email,
-                imageuri: user.imageUri
-            };
-
-            res.send(JSON.stringify(userInfo));
-        }
-        else
-        {
-            var response = {
-                    status  : 501,
-                    error : 'User token was incorrect please signin again.'
-            }
-            res.end(JSON.stringify(response));
-        }
-    });
-});
 app.post('/createPost', function(req, res) {
     try
     {
@@ -275,7 +236,75 @@ app.post('/createPost', function(req, res) {
     }
 });
 
-// Server Start ===========================================
+// Profile ==============================================
+app.post('/userInfo', function(req, res) {
+    User.findOne({username: req.body.username}, 'username password email name imageuri', function (err, user) {
+        
+        if(user === null)
+        {
+            var response = {
+                status  : 500,
+                error : 'User not found, please sign in.'
+            }
+            res.end(JSON.stringify(response));
+            return;
+        }
+
+        var isMatch = true; // false by default
+        // if(req.body.token !== null)
+        // {
+        //     isMatch = bcrypt.compareSync(user.username + user.password, req.body.token);
+        // }
+
+        if(isMatch)
+        {
+            var userInfo = { 
+                name: user.name,
+                username: user.username,
+                email: user.email,
+                imageuri: user.imageUri
+            };
+
+            res.send(JSON.stringify(userInfo));
+        }
+        else
+        {
+            var response = {
+                    status  : 501,
+                    error : 'User token was incorrect please signin again.'
+            }
+            res.end(JSON.stringify(response));
+        }
+    });
+});
+
+// Followers =============================================
+app.get('/following', function(req, res) {
+    User.findOne({ username: req.query.username }, 'following', function (err, current_user) {
+        if(current_user !== null)
+        {
+            var following = JSON.parse(current_user.following);
+        
+            // Return all users in following
+            User.find({username: { $in: following } }, 'name username imageuri', function(err, users){
+                res.send(JSON.stringify(users));
+            });
+        }
+        else {
+            // Empty array
+            res.send("[]");
+        }
+        
+    });
+});
+
+app.get('/users', function(req, res) {
+    User.find({}, 'name username imageuri', function (err, users) {
+        res.send(JSON.stringify(users));
+    });
+});
+
+// Server Start ==========================================
 
 app.listen(port);
 console.log("Server is now listening on port: " + port);
