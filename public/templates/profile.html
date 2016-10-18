@@ -1,14 +1,22 @@
 <div class="row">
-    <div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
+    <div class="col-sm-3 col-xs-12 side-bar panel panel-primary" flow-init>
         <div class="panel-heading" style="text-align: center; font-weight: bold;">
             {{ UserInfo.name }}
         </div>
         <div class="panel-body">
-            <div class="col-sm-12">
-                <img class="img-md" ng-src="{{ placeholderImage }}" />
-            </div>       
-            <span class="col-sm-12">Username: {{ UserInfo.username }}</span>
-            <input type="file" ng-click="previewFile()" />
+            <div class="col-sm-12" style="text-align: center">
+
+                <img class="img-md" ng-src="{{ placeholderImage }}"/>
+
+                <!-- upload btn -->
+                <span class='btn' id="uploadPic" flow-btn>Upload Pic</span>
+                <span class="col-sm-12">Username: {{ UserInfo.username }}</span>
+            </div>
+
+
+
+
+            <!-- <input type="file" ng-click="previewFile()" /> -->
         </div>
     </div>
     <div class="col-sm-8">
