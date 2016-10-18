@@ -1,4 +1,4 @@
-angular.module('hammer.controllers', [])
+angular.module('hammer.controllers', ['flow'])
 
 .controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService){
     
