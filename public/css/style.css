@@ -28,7 +28,6 @@
     height: 200px;
 }
 
-
 .text-post-input {
     display: block;
     resize: none;
@@ -40,7 +39,7 @@
 }
 
 /*Login/Registration View*/
-body{
+body {
 	margin:0;
     background-color: #fbfbfb;
 	color:#6a6f8c;

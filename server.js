@@ -47,7 +47,8 @@ var userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   admin: Boolean,
-  imageuri: String
+  imageuri: String,
+  following: [{ type: String }]
 });
 
 var User = mongoose.model('User', userSchema);
@@ -79,7 +80,8 @@ app.post('/signup', function(req, res) {
                         username: req.body.username,
                         password: encryptPassword(req.body.password),
                         admin: false,
-                        imageuri: req.body.imageUri
+                        imageuri: req.body.imageUri,
+                        following: []
                     });
                     
                     new_user.save();
@@ -112,7 +114,7 @@ app.post('/signup', function(req, res) {
     }
     catch(err)
     {
-       console.log(err);
+       console.error(err);
        var response = {
             status  : 500,
             error   : 'Fatal error during Sign Up.'
@@ -163,7 +165,7 @@ app.post('/signin', function(req, res) {
     }
     catch(err)
     {
-        console.log(err);
+        console.error(err);
         var response = {
             status  : 500,
             error : 'Fatal error during Sign In.'
@@ -175,10 +177,24 @@ app.post('/signin', function(req, res) {
 
 // Posts =======================
 app.get('/allPosts', function(req, res) {
-    Post.find({}, function(err, posts) {
-         res.send(
-             posts.sort(function(a, b) { return a.createdOn < b.createdOn })
-        );
+    User.findOne({username: req.query.username}, 'following', function (err, user) {
+        if(user !== null)
+        {
+            // Include self posts in the filter, do not save yourself into following
+            user.following.push(req.query.username);
+            Post.find({username: { $in: user.following } }, function(err, posts) {
+                res.send(
+                    posts.sort(function(a, b) { return a.createdOn < b.createdOn })
+                );
+            });
+        }
+        else {
+            Post.find({}, function(err, posts) {
+                res.send(
+                    posts.sort(function(a, b) { return a.createdOn < b.createdOn })
+                );
+            });
+        }
     });
 });
 
@@ -190,7 +206,51 @@ app.get('/userPosts', function(req, res) {
     });
 });
 
-// Profile
+app.post('/createPost', function(req, res) {
+    try
+    {
+        // Check if user exists in DB
+        User.findOne({username: req.body.username}, 'username', function (err, user) {
+            if(user === null)
+            {
+                var response = {
+                    status  : 500,
+                    error : 'User not found, please sign in.'
+                }
+                res.end(JSON.stringify(response));
+            }
+            else
+            {
+                // Create and save new post
+                var new_post = new Post ({
+                    username: req.body.username,
+                    body: req.body.body,
+                    createdOn: new Date()
+                });
+                
+                new_post.save();
+
+                var response = {
+                    status  : 200,
+                    success : 'Post created successfully'
+                }
+                res.end(JSON.stringify(response));
+            }
+        });
+    }
+    catch(err)
+    {
+        console.error(err);
+        var response = {
+            status  : 500,
+            error : 'Fatal error during Create Post.'
+        }
+        
+        res.end(JSON.stringify(response));
+    }
+});
+
+// Profile ==============================================
 app.post('/userInfo', function(req, res) {
     User.findOne({username: req.body.username}, 'username password email name imageuri', function (err, user) {
         
@@ -231,51 +291,112 @@ app.post('/userInfo', function(req, res) {
         }
     });
 });
-app.post('/createPost', function(req, res) {
-    try
-    {
-        // Check if user exists in DB
-        User.findOne({username: req.body.username}, 'username', function (err, user) {
-            if(user === null)
-            {
-                var response = {
-                    status  : 500,
-                    error : 'User not found, please sign in.'
-                }
-                res.end(JSON.stringify(response));
-            }
-            else
-            {
-                // Create and save new post
-                var new_post = new Post ({
-                    username: req.body.username,
-                    body: req.body.body,
-                    createdOn: new Date()
-                });
-                
-                new_post.save();
 
-                var response = {
-                    status  : 200,
-                    success : 'Post created successfully'
-                }
-                res.end(JSON.stringify(response));
-            }
-        });
-    }
-    catch(err)
-    {
-        console.log(err);
-        var response = {
-            status  : 500,
-            error : 'Fatal error during Create Post.'
+// Followers =============================================
+app.get('/following', function(req, res) {
+    User.findOne({ username: req.query.username }, 'following', function (err, current_user) {
+        if(current_user !== null)
+        {
+            // Return all users in following
+            User.find({username: { $in: current_user.following } }, 'name username imageuri', function(err, users){
+                res.send(JSON.stringify(users));
+            });
         }
-        
-        res.end(JSON.stringify(response));
-    }
+        else {
+            // Empty array
+            res.send("[]");
+        }
+    });
 });
 
-// Server Start ===========================================
+app.get('/users', function(req, res) {
+    User.find({}, 'name username imageuri', function (err, users) {
+        res.send(JSON.stringify(users));
+    });
+});
+
+app.post('/updateFollower', function(req, res) {
+    User.findOne({username: req.body.username}, 'following', function (err, user) {
+        if(user === null)
+        {
+            var response = {
+                status  : 500,
+                error : 'User not found.'
+            }
+            res.end(JSON.stringify(response));
+            return;
+        }
+        else {
+            if(req.body.updatedFollow) {
+                try {
+                   if(user.following === undefined) {             
+                       user.following = [];
+                       user.following.push(req.body.updatedFollow);
+                       user.save(function(err, user) {
+                            if (err) {
+                                console.error(err);
+                                res.send(400, 'Bad Request');
+                            }
+                        });
+
+                        var response = {
+                            status  : 200,
+                            success : 'Successfully updated user\'s follows.'
+                        };
+                        res.end(JSON.stringify(response));
+                   }
+                   else {
+                    if(user.following.indexOf(req.body.updatedFollow) != -1) { // Unfollow
+                        user.following = user.following.filter(follows => follows !== req.body.updatedFollow);
+                        user.save(function(err, user) {
+                            if (err) {
+                                console.error(err);
+                                res.send(400, 'Bad Request');
+                            }
+                        });
+
+                        var response = {
+                            status  : 200,
+                            success : 'Successfully updated user\'s follows.'
+                        };
+                        res.end(JSON.stringify(response));
+                    }
+                    else { // Follow
+                        user.following.push(req.body.updatedFollow);
+                        user.save(function(err, user) {
+                            if (err) {
+                                console.error(err);
+                                res.send(400, 'Bad Request');
+                            }
+                        });
+
+                        var response = {
+                            status  : 200,
+                            success : 'Successfully updated user\'s follows.'
+                        };
+                        res.end(JSON.stringify(response));
+                    }
+                   }
+                }
+                catch(exception) {
+                     console.error(exception.stack);
+                     var response = {
+                        status  : 500,
+                        error : 'Failed to update user\'s follows.'
+                    };
+                    res.end(JSON.stringify(response));
+                }
+            }
+             var response = {
+                status  : 500,
+                error : 'Failed to update user\'s follows.'
+            };
+            res.end(JSON.stringify(response));
+        }
+    });
+});
+
+// Server Start ==========================================
 
 app.listen(port);
 console.log("Server is now listening on port: " + port);

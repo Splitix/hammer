@@ -54,13 +54,36 @@ angular.module('hammer.services', ['ngCookies'])
             headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
+
+    this.GetAllUsers = function() {
+        return $http({
+            method  : 'GET',
+            url     : '/users'
+        });
+    }
+    
+    this.GetFollowing = function(username) {
+        return $http({
+            method  : 'GET',
+            url     : '/following?username=' + username
+        });
+    }
+
+     this.UpdateFollower = function(currentUsername, updatedFollow) {
+        return $http({
+            method  : 'POST',
+            url     : '/updateFollower',
+            data    : $.param({username: currentUsername, updatedFollow: updatedFollow}),
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+    }
 })
 .service('PostService', function($http) {
 
-    this.GetAllPosts = function() {
+    this.GetAllPosts = function(username) {
         return $http({
         method  : 'GET',
-        url     : '/allPosts'
+        url     : '/allPosts?username=' + username
         });
     }
 
