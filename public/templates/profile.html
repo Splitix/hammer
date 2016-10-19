@@ -15,14 +15,17 @@
                 </div>
 
                 <!-- upload btn wip-->
-                <span class='btn' id="uploadPic" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*">Upload Pic</span>
-                <span class='btn' id="uploadPic" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*">Change Pic</span>
+                <span class='btn' id="uploadPic" ng-hide="$flow.files.length"
+                      flow-btn flow-attrs="{accept:'image/*}">
+                    Upload Pic
+                </span>
+                <span class='btn' id="uploadPic" ng-show="$flow.files.length"
+                      flow-btn flow-attrs="{accept:'image/*}">
+                    Change Pic
+                </span>
 
                 <span class="col-sm-12">Username: {{ UserInfo.username }}</span>
             </div>
-
-
-
 
             <!-- <input type="file" ng-click="previewFile()" /> -->
         </div>
