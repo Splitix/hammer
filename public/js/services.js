@@ -80,10 +80,10 @@ angular.module('hammer.services', ['ngCookies'])
 })
 .service('PostService', function($http) {
 
-    this.GetAllPosts = function() {
+    this.GetAllPosts = function(username) {
         return $http({
         method  : 'GET',
-        url     : '/allPosts'
+        url     : '/allPosts?username=' + username
         });
     }
 

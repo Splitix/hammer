@@ -114,7 +114,7 @@ app.post('/signup', function(req, res) {
     }
     catch(err)
     {
-       console.log(err);
+       console.error(err);
        var response = {
             status  : 500,
             error   : 'Fatal error during Sign Up.'
@@ -165,7 +165,7 @@ app.post('/signin', function(req, res) {
     }
     catch(err)
     {
-        console.log(err);
+        console.error(err);
         var response = {
             status  : 500,
             error : 'Fatal error during Sign In.'
@@ -177,10 +177,24 @@ app.post('/signin', function(req, res) {
 
 // Posts =======================
 app.get('/allPosts', function(req, res) {
-    Post.find({}, function(err, posts) {
-         res.send(
-             posts.sort(function(a, b) { return a.createdOn < b.createdOn })
-        );
+    User.findOne({username: req.query.username}, 'following', function (err, user) {
+        if(user !== null)
+        {
+            // Include self posts in the filter, do not save yourself into following
+            user.following.push(req.query.username);
+            Post.find({username: { $in: user.following } }, function(err, posts) {
+                res.send(
+                    posts.sort(function(a, b) { return a.createdOn < b.createdOn })
+                );
+            });
+        }
+        else {
+            Post.find({}, function(err, posts) {
+                res.send(
+                    posts.sort(function(a, b) { return a.createdOn < b.createdOn })
+                );
+            });
+        }
     });
 });
 
@@ -226,7 +240,7 @@ app.post('/createPost', function(req, res) {
     }
     catch(err)
     {
-        console.log(err);
+        console.error(err);
         var response = {
             status  : 500,
             error : 'Fatal error during Create Post.'
@@ -283,7 +297,6 @@ app.get('/following', function(req, res) {
     User.findOne({ username: req.query.username }, 'following', function (err, current_user) {
         if(current_user !== null)
         {
-            console.log(current_user)
             // Return all users in following
             User.find({username: { $in: current_user.following } }, 'name username imageuri', function(err, users){
                 res.send(JSON.stringify(users));
@@ -321,7 +334,7 @@ app.post('/updateFollower', function(req, res) {
                        user.following.push(req.body.updatedFollow);
                        user.save(function(err, user) {
                             if (err) {
-                                console.log(err);
+                                console.error(err);
                                 res.send(400, 'Bad Request');
                             }
                         });
@@ -333,12 +346,11 @@ app.post('/updateFollower', function(req, res) {
                         res.end(JSON.stringify(response));
                    }
                    else {
-                       console.log(user.following)
                     if(user.following.indexOf(req.body.updatedFollow) != -1) { // Unfollow
                         user.following = user.following.filter(follows => follows !== req.body.updatedFollow);
                         user.save(function(err, user) {
                             if (err) {
-                                console.log(err);
+                                console.error(err);
                                 res.send(400, 'Bad Request');
                             }
                         });
@@ -353,7 +365,7 @@ app.post('/updateFollower', function(req, res) {
                         user.following.push(req.body.updatedFollow);
                         user.save(function(err, user) {
                             if (err) {
-                                console.log(err);
+                                console.error(err);
                                 res.send(400, 'Bad Request');
                             }
                         });
@@ -367,7 +379,7 @@ app.post('/updateFollower', function(req, res) {
                    }
                 }
                 catch(exception) {
-                     console.log(exception.stack);
+                     console.error(exception.stack);
                      var response = {
                         status  : 500,
                         error : 'Failed to update user\'s follows.'

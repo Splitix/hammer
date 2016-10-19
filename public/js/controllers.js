@@ -11,7 +11,8 @@ angular.module('hammer.controllers', [])
 
     $scope.getAllPosts = function() {
         $scope.loading = true;
-        PostService.GetAllPosts().then(function successCallback(response) {
+        PostService.GetAllPosts(UserService.GetCurrentUserName())
+        .then(function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
             console.log("Successfully retrieved posts.");
@@ -209,7 +210,8 @@ angular.module('hammer.controllers', [])
         $scope.loading = true;        
         UserService.GetAllUsers()
         .then(function successCallback(response) {
-                $scope.allUsers = response.data;
+                // Remove yourself from the list of users to follow
+                $scope.allUsers = response.data.filter(user => user.username != UserService.GetCurrentUserName());
                 $scope.loading = false;
             }, function errorCallback(response) {
                 console.log(response.data);
