@@ -246,7 +246,7 @@ angular.module('hammer.controllers', [])
         UserService.UpdateFollower(UserService.GetCurrentUserName(), updatedFollowUsername)
         .then(function successCallback(response) {
            console.log(response.data);
-            
+            location.reload();            
         }, function errorCallback(response) {
             console.log(response.data);
         });
