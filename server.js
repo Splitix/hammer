@@ -48,7 +48,7 @@ var userSchema = new Schema({
   password: { type: String, required: true },
   admin: Boolean,
   imageuri: String,
-  following: String
+  following: [{ type: String }]
 });
 
 var User = mongoose.model('User', userSchema);
@@ -81,7 +81,7 @@ app.post('/signup', function(req, res) {
                         password: encryptPassword(req.body.password),
                         admin: false,
                         imageuri: req.body.imageUri,
-                        following: '[]'
+                        following: []
                     });
                     
                     new_user.save();
@@ -283,10 +283,9 @@ app.get('/following', function(req, res) {
     User.findOne({ username: req.query.username }, 'following', function (err, current_user) {
         if(current_user !== null)
         {
-            var following = JSON.parse(current_user.following);
-        
+            console.log(current_user)
             // Return all users in following
-            User.find({username: { $in: following } }, 'name username imageuri', function(err, users){
+            User.find({username: { $in: current_user.following } }, 'name username imageuri', function(err, users){
                 res.send(JSON.stringify(users));
             });
         }
@@ -294,13 +293,94 @@ app.get('/following', function(req, res) {
             // Empty array
             res.send("[]");
         }
-        
     });
 });
 
 app.get('/users', function(req, res) {
     User.find({}, 'name username imageuri', function (err, users) {
         res.send(JSON.stringify(users));
+    });
+});
+
+app.post('/updateFollower', function(req, res) {
+    User.findOne({username: req.body.username}, 'following', function (err, user) {
+        if(user === null)
+        {
+            var response = {
+                status  : 500,
+                error : 'User not found.'
+            }
+            res.end(JSON.stringify(response));
+            return;
+        }
+        else {
+            if(req.body.updatedFollow) {
+                try {
+                   if(user.following === undefined) {             
+                       user.following = [];
+                       user.following.push(req.body.updatedFollow);
+                       user.save(function(err, user) {
+                            if (err) {
+                                console.log(err);
+                                res.send(400, 'Bad Request');
+                            }
+                        });
+
+                        var response = {
+                            status  : 200,
+                            success : 'Successfully updated user\'s follows.'
+                        };
+                        res.end(JSON.stringify(response));
+                   }
+                   else {
+                       console.log(user.following)
+                    if(user.following.indexOf(req.body.updatedFollow) != -1) { // Unfollow
+                        user.following = user.following.filter(follows => follows !== req.body.updatedFollow);
+                        user.save(function(err, user) {
+                            if (err) {
+                                console.log(err);
+                                res.send(400, 'Bad Request');
+                            }
+                        });
+
+                        var response = {
+                            status  : 200,
+                            success : 'Successfully updated user\'s follows.'
+                        };
+                        res.end(JSON.stringify(response));
+                    }
+                    else { // Follow
+                        user.following.push(req.body.updatedFollow);
+                        user.save(function(err, user) {
+                            if (err) {
+                                console.log(err);
+                                res.send(400, 'Bad Request');
+                            }
+                        });
+
+                        var response = {
+                            status  : 200,
+                            success : 'Successfully updated user\'s follows.'
+                        };
+                        res.end(JSON.stringify(response));
+                    }
+                   }
+                }
+                catch(exception) {
+                     console.log(exception.stack);
+                     var response = {
+                        status  : 500,
+                        error : 'Failed to update user\'s follows.'
+                    };
+                    res.end(JSON.stringify(response));
+                }
+            }
+             var response = {
+                status  : 500,
+                error : 'Failed to update user\'s follows.'
+            };
+            res.end(JSON.stringify(response));
+        }
     });
 });
 

@@ -68,6 +68,15 @@ angular.module('hammer.services', ['ngCookies'])
             url     : '/following?username=' + username
         });
     }
+
+     this.UpdateFollower = function(currentUsername, updatedFollow) {
+        return $http({
+            method  : 'POST',
+            url     : '/updateFollower',
+            data    : $.param({username: currentUsername, updatedFollow: updatedFollow}),
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+    }
 })
 .service('PostService', function($http) {
 

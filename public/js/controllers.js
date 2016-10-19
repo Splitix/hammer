@@ -236,7 +236,17 @@ angular.module('hammer.controllers', [])
             $scope.UserInfo = response.data;
             
         }, function errorCallback(response) {
-            console.log(response.data.error);
+            console.log(response.data);
+        });
+    }
+
+    $scope.updateFollower = function(updatedFollowUsername) {
+        UserService.UpdateFollower(UserService.GetCurrentUserName(), updatedFollowUsername)
+        .then(function successCallback(response) {
+           console.log(response.data);
+            
+        }, function errorCallback(response) {
+            console.log(response.data);
         });
     }
 

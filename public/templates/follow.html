@@ -29,7 +29,7 @@
                 ({{ user.username }})
             </div>
             <div class="col-sm-12">
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" style="margin-top: 10px;" ng-click="updateFollower(user.username)">
                     <span ng-show="!IsFollowing(user.username)">Follow</span>
                     <span ng-show="IsFollowing(user.username)">Unfollow</span>
                 </button>
