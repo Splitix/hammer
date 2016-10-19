@@ -103,6 +103,7 @@ angular.module('hammer.controllers', [])
             else
             {
                 console.log(data.error);
+				alert(data.error);
             }
         }).error(function(err){
             console.log("Signin Error:");
@@ -124,13 +125,15 @@ angular.module('hammer.controllers', [])
                 else
                 {
                     console.log(data.error);
+					alert(data.error);
                 }
             }).error(function(err){
                 console.log("SignUp Error:");
                 console.log(err);
             })
         }else{
-            console.log("Passwords Don't Match. Please try again.")
+            console.log("Passwords Don't Match. Please try again.");
+			alert("Passwords Don't Match. Please try again.");
         }
     }
 
