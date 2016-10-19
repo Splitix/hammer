@@ -1,15 +1,23 @@
 <div class="row">
-    <div class="col-sm-3 col-xs-12 side-bar panel panel-primary" flow-init>
+    <div class="col-sm-3 col-xs-12 side-bar panel panel-primary" flow-init="{target: '/profile'}"
+         flow-files-submitted="$flow.upload()">
         <div class="panel-heading" style="text-align: center; font-weight: bold;">
             {{ UserInfo.name }}
         </div>
         <div class="panel-body">
             <div class="col-sm-12" style="text-align: center">
+                <!-- profile picture -->
+                <div ng-hide="$flow.files.length">
+                    <img class="img-md" ng-src="{{ placeholderImage }}"/>
+                </div>
+                <div ng-show="$flow.files.length">
+                    <img class="img-md" flow-img="$flow.files[0]" />
+                </div>
 
-                <img class="img-md" ng-src="{{ placeholderImage }}"/>
+                <!-- upload btn wip-->
+                <span class='btn' id="uploadPic" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*">Upload Pic</span>
+                <span class='btn' id="uploadPic" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*">Change Pic</span>
 
-                <!-- upload btn -->
-                <span class='btn' id="uploadPic" flow-btn>Upload Pic</span>
                 <span class="col-sm-12">Username: {{ UserInfo.username }}</span>
             </div>
 
