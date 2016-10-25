@@ -11,7 +11,8 @@ angular.module('hammer.controllers', ['flow'])
 
     $scope.getAllPosts = function() {
         $scope.loading = true;
-        PostService.GetAllPosts().then(function successCallback(response) {
+        PostService.GetAllPosts(UserService.GetCurrentUserName())
+        .then(function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
             console.log("Successfully retrieved posts.");
@@ -199,4 +200,77 @@ angular.module('hammer.controllers', ['flow'])
 
     $scope.getPosts();
     $scope.getUserInfo();
+})
+.controller('FollowCtrl', function($scope, $state, $http, $rootScope, UserService) {
+    
+    // Check if user is signed in
+    $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
+
+    $scope.getAllUsers = function() {
+        $scope.loading = true;        
+        UserService.GetAllUsers()
+        .then(function successCallback(response) {
+                // Remove yourself from the list of users to follow
+                $scope.allUsers = response.data.filter(user => user.username != UserService.GetCurrentUserName());
+                $scope.loading = false;
+            }, function errorCallback(response) {
+                console.log(response.data);
+                $scope.loading = false;                
+        });   
+    }
+
+    $scope.getFollowing = function() {
+        UserService.GetFollowing(UserService.GetCurrentUserName())
+        .then(function successCallback(response) {
+                $scope.following = response.data;
+                
+            }, function errorCallback(response) {
+                console.log(response.data);
+        });   
+    }
+
+    $scope.getUserInfo = function() {
+        var username = UserService.GetCurrentUserName();
+        var token = UserService.GetToken();
+
+        UserService.GetUserInfo(username, token)
+        .then(function successCallback(response) {
+            $scope.UserInfo = response.data;
+            
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
+    }
+
+    $scope.updateFollower = function(updatedFollowUsername) {
+        UserService.UpdateFollower(UserService.GetCurrentUserName(), updatedFollowUsername)
+        .then(function successCallback(response) {
+           console.log(response.data);
+            location.reload();            
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
+    }
+
+    $scope.placeholderImage = "http://placekitten.com/200/200/";
+    
+    $scope.following = {};
+    $scope.allUsers = {};
+    $scope.UserInfo = {};
+    
+    $scope.getAllUsers();
+    $scope.getFollowing();
+    $scope.getUserInfo();
+
+    $scope.IsFollowing = function(username) {
+        var flag = false;
+        for(var user in $scope.following)
+        {
+            if($scope.following[user].username == username){
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
 });
