@@ -252,7 +252,7 @@ app.post('/createPost', function(req, res) {
 
 // Profile ==============================================
 app.post('/userInfo', function(req, res) {
-    if(req.body.userOwnsPage && req.body.userOwnsPage == true)
+    if(req.body.userOwnsPage && req.body.userOwnsPage == "true")
     {
         User.findOne({username: req.body.username}, 'username email name imageuri', function (err, user) {
         

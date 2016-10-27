@@ -18,7 +18,7 @@
                 <span class="col-sm-12">
                     <span style="font-weight: bold;">Username:</span> {{ UserInfo.username }}
                 </span>
-                <span class="col-sm-12" ng-if="UserOwnsPage">
+                <span class="col-sm-12" ng-if="UserInfo.email">
                     <span style="font-weight: bold;">Private Email:</span> {{ UserInfo.email }}
                 </span>
                 <span ng-if="!UserOwnsPage">
