@@ -2,7 +2,9 @@
     <span ng-if="IsUserSignedIn">
         <div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
             <div class="panel-heading" style="text-align: center; font-weight: bold;">
-                {{ UserInfo.name }}
+                <a href="/#/u/{{ UserInfo.username }}">
+                    {{ UserInfo.name }}
+                </a>
             </div>
             <div class="panel-body" style="text-align: center;">
                 <div class="col-sm-12">
@@ -16,7 +18,7 @@
                 <span class="col-sm-12">
                     <span style="font-weight: bold;">Username:</span> {{ UserInfo.username }}
                 </span>
-                <span class="col-sm-12" ng-if="UserInfo.email">
+                <span class="col-sm-12" ng-if="UserOwnsPage">
                     <span style="font-weight: bold;">Private Email:</span> {{ UserInfo.email }}
                 </span>
                 <span ng-if="!UserOwnsPage">
