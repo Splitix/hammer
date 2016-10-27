@@ -4,12 +4,18 @@
             <a href="https://github.com/Splitix/hammer">Project Hammer Github</a>
         </div>
         <div class="panel-body">
-            <span ng-if="IsUserSignedIn" style="font-weight: bold; text-align: center;">
+            <span ng-if="IsUserSignedIn" style="text-align: center;">
                 <div class="col-sm-12">
-                    <img class="img-md" ng-src="{{ placeholderImage2 }}" />
-                </div>       
-                <span class="col-sm-12">Username: {{ UserInfo.username }}</span>            
-                <span class="col-sm-12">Name: {{ UserInfo.name }}</span>
+                    <a href="/#/u/">
+                        <img class="img-md" ng-src="{{ placeholderImage }}" />
+                    </a>
+                </div>
+                <span class="col-sm-12">
+                    <span style="font-weight: bold;">Name:</span> {{ UserInfo.name }}
+                </span>
+                <span class="col-sm-12">
+                    <span style="font-weight: bold;">Username:</span> {{ UserInfo.username }}
+                </span>
             </span>
             <span ng-if="!IsUserSignedIn" class="col-sm-12" style="text-align: center;">
                 <span class="text-warning">You need an account to create Posts.</span>

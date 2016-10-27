@@ -3,8 +3,6 @@ angular.module('hammer.controllers', [])
 .controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService){
     
     $scope.placeholderImage = "http://placekitten.com/200/200/";
-    $scope.placeholderImage2 = "http://placekitten.com/400/400/";
-
 
     // Check if user is signed in    
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
