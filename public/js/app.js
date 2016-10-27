@@ -15,7 +15,7 @@ angular.module('hammer', ['ui.router', 'hammer.controllers', 'hammer.services', 
         controller: 'SignInCtrl'
     })
     .state('profile', {
-        url: '/profile',
+        url: '/u/:username',
         templateUrl: 'templates/profile.html',
         controller: 'ProfileCtrl'
     })

@@ -3,13 +3,24 @@
         <div class="panel-heading" style="text-align: center; font-weight: bold;">
             <a href="https://github.com/Splitix/hammer">Project Hammer Github</a>
         </div>
-        <div class="panel-body">
-            <span ng-if="IsUserSignedIn" style="font-weight: bold; text-align: center;">
+        <div class="panel-body" style="text-align: center;">
+            <span ng-if="IsUserSignedIn">
                 <div class="col-sm-12">
-                    <img class="img-md" ng-src="{{ placeholderImage }}" />
-                </div>       
-                <span class="col-sm-12">Username: {{ UserInfo.username }}</span>            
-                <span class="col-sm-12">Name: {{ UserInfo.name }}</span>
+                    <a href="/#/u/">
+                        <img class="img-md" ng-src="{{ placeholderImage }}" />
+                    </a>
+                </div>
+                <span class="col-sm-12">
+                    <span style="font-weight: bold;">Name:</span> {{ UserInfo.name }}
+                </span>
+                <span class="col-sm-12">
+                    <span style="font-weight: bold;">Username:</span> {{ UserInfo.username }}
+                </span>     
+            </span>
+            <span ng-if="!IsUserSignedIn" class="col-sm-12" style="text-align: center;">
+                <span class="text-warning">You need an account to follow other users.</span>
+                <br />
+                <a class="btn btn-primary" href="/#/signin">Sign-In / Sign-Up</a>
             </span>
         </div>            
     </div>
@@ -20,13 +31,15 @@
             LOADING...
         </h2>
         <div ng-repeat="user in allUsers" class="col-sm-3 col-xs-12 panel panel-default" style="padding: 5px; margin: 5px; text-align: center;">
-            <div class="col-sm-12">
+            <a href="/#/u/{{ user.username }}" class="col-sm-12" alt="{{ user.name }}">
                 <img class="img-sm" ng-src="{{ placeholderImage }}" />
-            </div>
+            </a>
             <div class="col-sm-12">
                 {{ user.name }}          
                 <br />
-                ({{ user.username }})
+                <a href="/#/u/{{ user.username }}">
+                    ({{ user.username }})
+                </a>
             </div>
             <div class="col-sm-12">
                 <button class="btn btn-primary" style="margin-top: 10px;" ng-click="updateFollower(user.username)">

@@ -11,6 +11,11 @@
                 <span class="col-sm-12">Username: {{ UserInfo.username }}</span>            
                 <span class="col-sm-12">Name: {{ UserInfo.name }}</span>
             </span>
+            <span ng-if="!IsUserSignedIn" class="col-sm-12" style="text-align: center;">
+                <span class="text-warning">You need an account to create Posts.</span>
+                <br />
+                <a class="btn btn-primary" href="/#/signin">Sign-In / Sign-Up</a>
+            </span>
         </div>            
     </div>
     
@@ -26,10 +31,14 @@
         <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-9 col-xs-12 panel panel-default">
             <div class="col-sm-3" style="padding: 5px; text-align: center;">
                 <div class="col-sm-12">
-                    <img class="img-sm" ng-src="{{ placeholderImage }}" />
+                    <a href="/#/u/{{ post.username }}" class="col-sm-12" alt="{{ post.username }}">
+                        <img class="img-sm" ng-src="{{ placeholderImage }}" />
+                    </a>
                 </div>
                 <div class="col-sm-12">
-                    {{ post.username }}
+                    <a href="/#/u/{{ post.username }}" class="col-sm-12" alt="{{ post.username }}">
+                        {{ post.username }}
+                    </a>
                 </div>
             </div>
             <div class="col-sm-9" style="padding: 15px;">
