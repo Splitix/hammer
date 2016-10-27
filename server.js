@@ -252,44 +252,69 @@ app.post('/createPost', function(req, res) {
 
 // Profile ==============================================
 app.post('/userInfo', function(req, res) {
-    User.findOne({username: req.body.username}, 'username password email name imageuri', function (err, user) {
+    if(req.body.userOwnsPage && req.body.userOwnsPage == true)
+    {
+        User.findOne({username: req.body.username}, 'username email name imageuri', function (err, user) {
         
-        if(user === null)
-        {
-            var response = {
-                status  : 500,
-                error : 'User not found, please sign in.'
+            if(user === null)
+            {
+                var response = {
+                    status  : 500,
+                    error : 'User not found, please sign in.'
+                }
+                res.end(JSON.stringify(response));
+                return;
             }
-            res.end(JSON.stringify(response));
-            return;
-        }
 
-        var isMatch = true; // false by default
-        // if(req.body.token !== null)
-        // {
-        //     isMatch = bcrypt.compareSync(user.username + user.password, req.body.token);
-        // }
+            var isMatch = true; // false by default
+            // if(req.body.token !== null)
+            // {
+            //     isMatch = bcrypt.compareSync(user.username + user.password, req.body.token);
+            // }
 
-        if(isMatch)
-        {
-            var userInfo = { 
-                name: user.name,
-                username: user.username,
-                email: user.email,
-                imageuri: user.imageUri
-            };
+            if(isMatch)
+            {
+                var userInfo = { 
+                    name: user.name,
+                    username: user.username,
+                    email: user.email,
+                    imageuri: user.imageUri
+                };
 
-            res.send(JSON.stringify(userInfo));
-        }
-        else
-        {
-            var response = {
-                    status  : 501,
-                    error : 'User token was incorrect please signin again.'
+                res.send(JSON.stringify(userInfo));
             }
-            res.end(JSON.stringify(response));
-        }
-    });
+            else
+            {
+                var response = {
+                        status  : 501,
+                        error : 'User token was incorrect please signin again.'
+                }
+                res.end(JSON.stringify(response));
+            }
+        });
+    }
+    // User is guest, hide personal data
+    else {
+        User.findOne({username: req.body.username}, 'username name imageuri', function (err, user) {
+        
+            if(user === null)
+            {
+                var response = {
+                    status  : 500,
+                    error : 'Requested user not found.'
+                }
+                res.end(JSON.stringify(response));
+            }
+            else {
+                var userInfo = { 
+                    name: user.name,
+                    username: user.username,
+                    imageuri: user.imageUri
+                };
+                res.send(JSON.stringify(userInfo));
+            }
+        });            
+    }
 });
 
 // Followers =============================================

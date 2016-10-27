@@ -46,11 +46,11 @@ angular.module('hammer.services', ['ngCookies'])
         return $cookies.get('token') !== undefined;
     }
 
-    this.GetUserInfo = function(username, token) {
+    this.GetUserInfo = function(username, token, userOwnsPage) {
         return $http({
             method  : 'POST',
             url     : '/userInfo',
-            data    : $.param({username: username, token: token}),
+            data    : $.param({username: username, token: token, userOwnsPage: userOwnsPage}),
             headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
@@ -76,6 +76,10 @@ angular.module('hammer.services', ['ngCookies'])
             data    : $.param({username: currentUsername, updatedFollow: updatedFollow}),
             headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
+    }
+
+    this.UserOwnsPage = function(stateParamsUser, username) {
+        return stateParamsUser == username;
     }
 })
 .service('PostService', function($http) {
