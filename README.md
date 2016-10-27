@@ -11,4 +11,11 @@ Using Terminal/Bash<br />
 	-By default the site is at localhost:4001<br />
 	-You can change the port by running: node server.js "PORT"<br />
 	-Replace port with whatever port number you want above 1024.<br />
+Members:
+----------------
+* Blake Bordovsky
+* Jason Flinn
+* Joshua Galindo
+* Lane Malone
+* Mark Switzer
 
