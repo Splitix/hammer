@@ -3,9 +3,7 @@ angular.module('hammer.controllers', ['flow'])
 .controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService){
     
     $scope.placeholderImage = "http://placekitten.com/200/200/";
-    $scope.placeholderImage2 = "http://placekitten.com/400/400/";
-
-
+    
     // Check if user is signed in    
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
@@ -143,17 +141,24 @@ angular.module('hammer.controllers', ['flow'])
     };
 
 })
-.controller('ProfileCtrl', function($scope, $state, $http, $rootScope, UserService, PostService) {
-
+.controller('ProfileCtrl', function($scope, $state, $stateParams, $http, $rootScope, UserService, PostService) {
     // Check if user is signed in
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
-    $scope.getPosts = function() {
+    $scope.UserOwnsPage = false;
+    if($stateParams.username == undefined || $stateParams.username == "" ) {
+        $scope.UserOwnsPage = true;
+    }
+    else {
+        $scope.UserOwnsPage = UserService.UserOwnsPage($stateParams.username, UserService.GetCurrentUserName());
+    }
+
+    $scope.getPosts = function(username) {
         $scope.loading = true;
-        PostService.GetUserPosts(UserService.GetCurrentUserName()).then(function successCallback(response) {
+        PostService.GetUserPosts(username).then(function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
-            console.log("Successfully retrieved posts for user.");
+            console.log("Successfully retrieved posts for user: ", username);
             $scope.posts = response.data;
             $scope.loading = false;
 
@@ -164,16 +169,50 @@ angular.module('hammer.controllers', ['flow'])
         });
     }
 
-    $scope.getUserInfo = function() {
-        var username = UserService.GetCurrentUserName();
+    $scope.getUserInfo = function(username, userOwnsPage) {
         var token = UserService.GetToken();
+    
+        if(userOwnsPage) {
+            $scope.NoPostsName = "You";
+        }
 
-        UserService.GetUserInfo(username, token)
+        UserService.GetUserInfo(username, token, userOwnsPage)
         .then(function successCallback(response) {
             $scope.UserInfo = response.data;
             
         }, function errorCallback(response) {
             console.log(response.data.error);
+        });
+    }
+
+    $scope.getFollowing = function() {
+        UserService.GetFollowing(UserService.GetCurrentUserName())
+        .then(function successCallback(response) {
+                $scope.following = response.data;
+                
+            }, function errorCallback(response) {
+                console.log(response.data);
+        });   
+    }
+
+    $scope.IsFollowing = function(username) {
+        var flag = false;
+        for(var user in $scope.following)
+        {
+            if($scope.following[user].username == username){
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    $scope.updateFollower = function(updatedFollowUsername) {
+        UserService.UpdateFollower(UserService.GetCurrentUserName(), updatedFollowUsername)
+        .then(function successCallback(response) {
+           console.log(response.data);
+            location.reload();            
+        }, function errorCallback(response) {
+            console.log(response.data);
         });
     }
 
@@ -194,12 +233,20 @@ angular.module('hammer.controllers', ['flow'])
     
     $scope.placeholderImage = "http://placekitten.com/200/200/";
     $scope.profilePicture = $scope.placeholderImage;
+    $scope.NoPostsName = "This user";
 
     $scope.posts = [];
     $scope.UserInfo = {};
 
-    $scope.getPosts();
-    $scope.getUserInfo();
+    var u = UserService.GetCurrentUserName();
+    if($stateParams.username && $stateParams.username != "") {
+        u = $stateParams.username;
+    }
+    
+    $scope.getUserInfo(u, $scope.UserOwnsPage);
+    $scope.getFollowing();    
+    $scope.getPosts(u);
+    
 })
 .controller('FollowCtrl', function($scope, $state, $http, $rootScope, UserService) {
     
