@@ -1,25 +1,31 @@
-console.log(document.getElementsByName("search").value;)
-<div class="col-sm-8 col-xs-12 panel-group">
-        <h2 ng-show="loading" class="col-sm-9 loading">
-            <img src="img/loading.gif" alt="LOADING..." />
-            LOADING...
-        </h2>
-        <div ng-repeat="user in searchRes" class="col-sm-3 col-xs-12 panel panel-default" style="padding: 5px; margin: 5px; text-align: center;">
-            <a href="/#/u/{{ user.username }}" class="col-sm-12" alt="{{ user.name }}">
-                <img class="img-sm" ng-src="{{ placeholderImage }}" />
-            </a>
-            <div class="col-sm-12">
-                {{ user.name }}          
-                <br />
-                <a href="/#/u/{{ user.username }}">
-                    ({{ user.username }})
-                </a>
-            </div>
-            <div class="col-sm-12">
-                <button class="btn btn-primary" style="margin-top: 10px;" ng-click="updateFollower(user.username)">
-                    <span ng-show="!IsFollowing(user.username)">Follow</span>
-                    <span ng-show="IsFollowing(user.username)">Unfollow</span>
-                </button>
-            </div>  
-        </div>
+<div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
+    <div class="panel-heading" style="text-align: center; font-weight: bold;">
+        <a href="https://github.com/Splitix/hammer">Project Hammer Github</a>
     </div>
+    <div class="panel-body" style="text-align: center;">
+    </div>
+</div>
+<div class="col-sm-8 col-xs-12 panel-group">
+    <h2 ng-show="loading" class="col-sm-9 loading">
+        <img src="img/loading.gif" alt="LOADING..." />
+        LOADING...
+    </h2>
+    <div ng-repeat="user in searchRes track by $index" class="col-sm-3 col-xs-12 panel panel-default" style="padding: 5px; margin: 5px; text-align: center;">
+        <a href="/#/u/{{ user.username }}" class="col-sm-12" alt="{{ user.name }}">
+            <img class="img-sm" ng-src="{{ placeholderImage }}" />
+        </a>
+        <div class="col-sm-12">
+            {{ user.name }}          
+            <br />
+            <a href="/#/u/{{ user.username }}">
+                ({{ user.username }})
+            </a>
+        </div>
+        <div class="col-sm-12">
+            <button class="btn btn-primary" style="margin-top: 10px;" ng-click="updateFollower(user.username)">
+                <span ng-show="!IsFollowing(user.username)">Follow</span>
+                <span ng-show="IsFollowing(user.username)">Unfollow</span>
+            </button>
+        </div>  
+    </div>
+</div>

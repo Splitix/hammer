@@ -25,7 +25,7 @@ angular.module('hammer', ['ui.router', 'hammer.controllers', 'hammer.services', 
         controller: 'FollowCtrl'
     })
     .state('search', {
-        url: '/search:search',
+        url: '/search:query',
         templateUrl: 'templates/search.html',
         controller: 'SearchCtrl'
     });
