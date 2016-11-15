@@ -1,6 +1,7 @@
 angular.module('hammer.controllers', [])
 
 .controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService){
+    $scope.searchForm = {};
     
     $scope.placeholderImage = "http://placekitten.com/200/200/";
     
@@ -77,6 +78,16 @@ angular.module('hammer.controllers', [])
 
         return date.toLocaleTimeString() + ' ' + 
             months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+    }
+
+
+    $scope.search = function(){
+        console.log("SearchForm")
+        $scope.searchRes =  $http({
+            method  : 'GET',
+            url     : '/#/search?search=' + $scope.searchForm.search
+        });
+        console.log($scope.searchRes)
     }
 })
 
@@ -320,4 +331,31 @@ angular.module('hammer.controllers', [])
         return flag;
     }
 
+})
+.controller('SearchCtrl', function($scope, $state, $http, $rootScope, UserService, $stateParams){
+
+
+    $scope.placeholderImage = "http://placekitten.com/200/200/";
+    $http({
+        method  : 'GET',
+        url     : '/search?search=' + "Josh"
+    }).success(function(res){
+        console.log("Res")
+        console.log(res);
+        $scope.searchRes = res;
+    }).error(function(err){
+
+    });
+    //console.log($scope.searchRes)
+
+
+
+
 });
+
+
+
+
+
+
+

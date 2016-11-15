@@ -42,6 +42,15 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
+            <li>
+              <form action="/#/search" class="search-form">
+                <div class="form-group has-feedback">
+                  <label for="search" class="sr-only">Search</label>
+                  <input type="text" class="form-control" name="search" id="search" placeholder="search" ng-model="searchname">
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+              </form>
+            </li>
             <li ng-if="!IsUserSignedIn">
               <a href="/#/signin">
                 <span class="glyphicon glyphicon-log-in"></span> Sign In / Sign Up
@@ -71,6 +80,7 @@
     <script type="text/javascript">
       var images = ['bg-01.jpg', 'bg-02.jpg', 'bg-03.jpg', 'bg-04.jpg'];
       $('body').css({'background-image': 'url(img/' + images[Math.floor(Math.random() *      images.length)] + ')'});
+      
     </script>
 	</body>
 </html>

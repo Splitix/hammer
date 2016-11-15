@@ -23,6 +23,11 @@ angular.module('hammer', ['ui.router', 'hammer.controllers', 'hammer.services', 
         url: '/following',
         templateUrl: 'templates/follow.html',
         controller: 'FollowCtrl'
+    })
+    .state('search', {
+        url: '/search:search',
+        templateUrl: 'templates/search.html',
+        controller: 'SearchCtrl'
     });
     
     // Route not found go to /dashboard
