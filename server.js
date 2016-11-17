@@ -337,7 +337,7 @@ app.get('/following', function(req, res) {
 // Search =================================================
 app.get('/search', function(req, res) {
     var query = new RegExp(req.query.query, "i");
-    User.find({ name: query, username: query }, 'username name imageuri', function (err, users) {
+    User.find({'$or': [{ name: query }, { username: query }]}, 'username name imageuri', function (err, users) {
         if(users !== null)
         {
             res.send(JSON.stringify(users));
