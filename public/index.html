@@ -40,18 +40,18 @@
           </button>
           <a class="navbar-brand" href="/#/">Hammer</a>
         </div>
+        <div class="col-sm-7">
+          <form id="search-form-bar" class="search-form">
+            <div class="form-group has-feedback">
+              <label for="search" class="sr-only">Search</label>
+              <input type="text" class="form-control" name="query" id="search-query"
+                  placeholder="Search for a User...">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+        </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
-            <li>
-              <form id="search-form-bar" class="search-form">
-                <div class="form-group has-feedback">
-                  <label for="search" class="sr-only">Search</label>
-                  <input type="text" class="form-control" name="query" id="search-query"
-                      placeholder="Search for a User...">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                </div>
-              </form>
-            </li>
             <li ng-if="!IsUserSignedIn">
               <a href="/#/signin">
                 <span class="glyphicon glyphicon-log-in"></span> Sign In / Sign Up
@@ -76,7 +76,7 @@
         </div>
       </div>
     </nav>
-    <div ui-view></div>
+    <div class="col-xs-12" ui-view></div>
     <!-- Script that Randomizes the background -->
     <script type="text/javascript">
       var images = ['bg-01.jpg', 'bg-02.jpg', 'bg-03.jpg', 'bg-04.jpg'];

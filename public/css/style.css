@@ -246,8 +246,8 @@ a{color:inherit;text-decoration:none}
 .search-form .form-group input.form-control:-ms-input-placeholder {
   display: none;
 }
-.search-form .form-group:hover,
-.search-form .form-group.hover {
+.search-form .form-group,
+.search-form .form-group {
   width: 100%;
   border-radius: 4px 25px 25px 4px;
 }
