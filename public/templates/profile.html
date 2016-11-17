@@ -1,78 +1,76 @@
-<div class="row">
-    <span ng-if="IsUserSignedIn">
-        <div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
-            <div class="panel-heading" style="text-align: center; font-weight: bold;">
+<span ng-if="IsUserSignedIn">
+    <div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
+        <div class="panel-heading" style="text-align: center; font-weight: bold;">
+            <a href="/#/u/{{ UserInfo.username }}">
+                {{ UserInfo.name }}
+            </a>
+        </div>
+        <div class="panel-body" style="text-align: center;">
+            <div class="col-sm-12">
                 <a href="/#/u/{{ UserInfo.username }}">
-                    {{ UserInfo.name }}
+                    <img class="img-md" ng-src="{{ placeholderImage }}" />
                 </a>
             </div>
-            <div class="panel-body" style="text-align: center;">
+            <div class="col-sm-12">
+                <span style="font-weight: bold;">Name:</span> {{ UserInfo.name }}
+            </div>
+            <div class="col-sm-12">
+                <span style="font-weight: bold;">Username:</span> {{ UserInfo.username }}
+            </div>
+            <div class="col-sm-12" ng-if="UserInfo.email">
+                <span style="font-weight: bold;">Private Email:</span> {{ UserInfo.email }}
+            </div>
+            <span ng-if="!UserOwnsPage">
                 <div class="col-sm-12">
-                    <a href="/#/u/{{ UserInfo.username }}">
-                        <img class="img-md" ng-src="{{ placeholderImage }}" />
-                    </a>
+                    <button class="btn btn-primary" style="margin-top: 10px;" ng-click="updateFollower(UserInfo.username)">
+                        <span ng-show="!IsFollowing(UserInfo.username)">Follow</span>
+                        <span ng-show="IsFollowing(UserInfo.username)">Unfollow</span>
+                    </button>
                 </div>
-                <span class="col-sm-12">
-                        <span style="font-weight: bold;">Name:</span> {{ UserInfo.name }}
-                    </span>
-                <span class="col-sm-12">
-                    <span style="font-weight: bold;">Username:</span> {{ UserInfo.username }}
-                </span>
-                <span class="col-sm-12" ng-if="UserInfo.email">
-                    <span style="font-weight: bold;">Private Email:</span> {{ UserInfo.email }}
-                </span>
-                <span ng-if="!UserOwnsPage">
-                    <div class="col-sm-12">
-                        <button class="btn btn-primary" style="margin-top: 10px;" ng-click="updateFollower(UserInfo.username)">
-                            <span ng-show="!IsFollowing(UserInfo.username)">Follow</span>
-                            <span ng-show="IsFollowing(UserInfo.username)">Unfollow</span>
-                        </button>
-                    </div>
-                </span>
+            </span>
+        </div>
+    </div>
+</span>
+<span ng-if="!IsUserSignedIn">
+    <div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
+        <div class="panel-heading" style="text-align: center; font-weight: bold;">
+            <a href="https://github.com/Splitix/hammer">Project Hammer Github</a>
+        </div>
+        <div class="panel-body" style="text-align: center;">
+            <div class="col-sm-12">
+                <span class="text-warning">You need an account to view your profile.</span>
+                <br />
+                <a class="btn btn-primary" href="/#/signin">Sign-In / Sign-Up</a>
             </div>
         </div>
-    </span>
-    <span ng-if="!IsUserSignedIn">
-        <div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
-            <div class="panel-heading" style="text-align: center; font-weight: bold;">
-                <a href="https://github.com/Splitix/hammer">Project Hammer Github</a>
-            </div>
-            <div class="panel-body" style="text-align: center;">
+    </div>
+</span>
+<div class="col-sm-8">
+    <h2 ng-show="loading" class="col-sm-9 loading">
+        <img src="img/loading.gif" alt="LOADING..." />LOADING...
+    </h2>
+    <div ng-if="posts.length == 0 && !loading">
+        <div class="col-sm-12 panel panel-default">
+            <div class="col-sm-12" style="padding: 35px; text-align: center;">
+                {{ NoPostsName }} have no posts.
+            </div>  
+        </div>
+    </div>
+    <div ng-if="posts.length != 0">
+        <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-9 col-xs-12 panel panel-default">
+            <div class="col-sm-3" style="padding: 5px; text-align: center;">
                 <div class="col-sm-12">
-                    <span class="text-warning">You need an account to view your profile.</span>
-                    <br />
-                    <a class="btn btn-primary" href="/#/signin">Sign-In / Sign-Up</a>
+                    <img class="img-sm" ng-src="{{ placeholderImage }}" />
+                </div>
+                <div class="col-sm-12">
+                    {{ post.username }}
                 </div>
             </div>
-        </div>
-    </span>
-    <div class="col-sm-8">
-        <h2 ng-show="loading" class="col-sm-9 loading">
-            <img src="img/loading.gif" alt="LOADING..." />LOADING...
-        </h2>
-        <div ng-if="posts.length == 0 && !loading">
-            <div class="col-sm-12 panel panel-default">
-                <div class="col-sm-12" style="padding: 35px; text-align: center;">
-                    {{ NoPostsName }} have no posts.
-                </div>  
+            <div class="col-sm-9" style="padding: 15px;">
+                {{ post.body }}
             </div>
-        </div>
-        <div ng-if="posts.length != 0">
-            <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-9 col-xs-12 panel panel-default">
-                <div class="col-sm-3" style="padding: 5px; text-align: center;">
-                    <div class="col-sm-12">
-                        <img class="img-sm" ng-src="{{ placeholderImage }}" />
-                    </div>
-                    <div class="col-sm-12">
-                        {{ post.username }}
-                    </div>
-                </div>
-                <div class="col-sm-9" style="padding: 15px;">
-                    {{ post.body }}
-                </div>
-                <div style="padding-bottom: 5px; float: right;">
-                    {{ formatDate(post.createdOn) }}
-                </div>
+            <div style="padding-bottom: 5px; float: right;">
+                {{ formatDate(post.createdOn) }}
             </div>
         </div>
     </div>
