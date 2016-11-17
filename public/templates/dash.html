@@ -1,58 +1,56 @@
-<div class="row">
-    <div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
-        <div class="panel-heading" style="text-align: center; font-weight: bold;">
-            <a href="https://github.com/Splitix/hammer">Project Hammer Github</a>
-        </div>
-        <div class="panel-body">
-            <span ng-if="IsUserSignedIn" style="text-align: center;">
-                <div class="col-sm-12">
-                    <a href="/#/u/">
-                        <img class="img-md" ng-src="{{ placeholderImage }}" />
-                    </a>
-                </div>
-                <div class="col-sm-12">
-                    <span style="font-weight: bold;">Name:</span> {{ UserInfo.name }}
-                </div>
-                <div class="col-sm-12">
-                    <span style="font-weight: bold;">Username:</span> {{ UserInfo.username }}
-                </div>
-            </span>
-            <span ng-if="!IsUserSignedIn" class="col-sm-12" style="text-align: center;">
-                <span class="text-warning">You need an account to create Posts.</span>
-                <br />
-                <a class="btn btn-primary" href="/#/signin">Sign-In / Sign-Up</a>
-            </span>
-        </div>            
+<div class="col-sm-3 col-xs-12 side-bar panel panel-primary">
+    <div class="panel-heading" style="text-align: center; font-weight: bold;">
+        <a href="https://github.com/Splitix/hammer">Project Hammer Github</a>
     </div>
-    
-    <div class="col-sm-8 col-xs-12 panel-group">
-        <form class="col-sm-9 col-xs-12 input-group" ng-submit="createPost()">
-            <textarea max-length="256" placeholder="Nail down your thoughts..." ng-model="testPostFormData.body" class="form-control text-post-input"></textarea>
+    <div class="panel-body">
+        <span ng-if="IsUserSignedIn" style="text-align: center;">
+            <div class="col-sm-12">
+                <a href="/#/u/">
+                    <img class="img-md" ng-src="{{ placeholderImage }}" />
+                </a>
+            </div>
+            <div class="col-sm-12">
+                <span style="font-weight: bold;">Name:</span> {{ UserInfo.name }}
+            </div>
+            <div class="col-sm-12">
+                <span style="font-weight: bold;">Username:</span> {{ UserInfo.username }}
+            </div>
+        </span>
+        <span ng-if="!IsUserSignedIn" class="col-sm-12" style="text-align: center;">
+            <span class="text-warning">You need an account to create Posts.</span>
             <br />
-            <button class="btn btn-primary col-xs-12 col-sm-4" style="float: right; margin-top: 5px;" type="submit">Hammer Time!</button>
-        </form>
-        <h2 ng-show="loading" class="col-sm-9 loading">
-            <img src="img/loading.gif" alt="LOADING..." />LOADING...
-        </h2>
-        <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-9 col-xs-12 panel panel-default">
-            <div class="col-sm-3" style="padding: 5px; text-align: center;">
-                <div class="col-sm-12">
-                    <a href="/#/u/{{ post.username }}" class="col-sm-12" alt="{{ post.username }}">
-                        <img class="img-sm" ng-src="{{ placeholderImage }}" />
-                    </a>
-                </div>
-                <div class="col-sm-12">
-                    <a href="/#/u/{{ post.username }}" class="col-sm-12" alt="{{ post.username }}">
-                        {{ post.username }}
-                    </a>
-                </div>
+            <a class="btn btn-primary" href="/#/signin">Sign-In / Sign-Up</a>
+        </span>
+    </div>            
+</div>
+
+<div class="col-sm-8 col-xs-12 panel-group">
+    <form class="col-sm-9 col-xs-12 input-group" ng-submit="createPost()">
+        <textarea max-length="256" placeholder="Nail down your thoughts..." ng-model="testPostFormData.body" class="form-control text-post-input"></textarea>
+        <br />
+        <button class="btn btn-primary col-xs-12 col-sm-4" style="float: right; margin-top: 5px;" type="submit">Hammer Time!</button>
+    </form>
+    <h2 ng-show="loading" class="col-sm-9 loading">
+        <img src="img/loading.gif" alt="LOADING..." />LOADING...
+    </h2>
+    <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-9 col-xs-12 panel panel-default">
+        <div class="col-sm-3" style="padding: 5px; text-align: center;">
+            <div class="col-sm-12">
+                <a href="/#/u/{{ post.username }}" class="col-sm-12" alt="{{ post.username }}">
+                    <img class="img-sm" ng-src="{{ placeholderImage }}" />
+                </a>
             </div>
-            <div class="col-sm-9" style="padding: 15px;">
-                {{ post.body }}
+            <div class="col-sm-12">
+                <a href="/#/u/{{ post.username }}" class="col-sm-12" alt="{{ post.username }}">
+                    {{ post.username }}
+                </a>
             </div>
-            <div style="padding-bottom: 5px; float: right;">
-                {{ formatDate(post.createdOn) }}
-            </div>
+        </div>
+        <div class="col-sm-9" style="padding: 15px;">
+            {{ post.body }}
+        </div>
+        <div style="padding-bottom: 5px; float: right;">
+            {{ formatDate(post.createdOn) }}
         </div>
     </div>
 </div>
