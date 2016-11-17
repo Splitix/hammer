@@ -1,6 +1,7 @@
 angular.module('hammer.controllers', [])
 
-.controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService){
+.controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService, $location){
+    $scope.searchForm = {};
     
     $scope.placeholderImage = "http://placekitten.com/200/200/";
     
@@ -74,12 +75,10 @@ angular.module('hammer.controllers', [])
         "July", "August", "September", "October", "November", "December"
         ];
 
-
         return date.toLocaleTimeString() + ' ' + 
             months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
     }
 })
-
 .controller('SignInCtrl', function($scope, $state, $http, $rootScope, UserService, LoginService){
 
     // Check if user is signed in
@@ -323,4 +322,32 @@ angular.module('hammer.controllers', [])
         return flag;
     }
 
+})
+.controller('SearchCtrl', function($scope, $state, $http, UserService, $location){
+
+    $scope.placeholderImage = "http://placekitten.com/200/200/";
+
+    $scope.search = function() {
+        $scope.loading = true;        
+        $http({
+            method  : 'GET',
+            url     : '/search?query=' + $location.search().query
+        }).success(function(res){
+            $scope.loading = false;            
+            $scope.searchRes = res;
+        }).error(function(err){
+            $scope.loading = false;            
+            console.log(err);
+        });
+    }
+
+    $scope.search();
+
 });
+
+
+
+
+
+
+
