@@ -106,4 +106,13 @@ angular.module('hammer.services', ['ngCookies'])
         headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
+
+    this.DeletePost = function(username, postId) {
+        return $http({
+        method  : 'DELETE',
+        url     : '/deletePost',
+        data    : $.param({username: username, id: postId}),
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+    }
 });
