@@ -58,6 +58,9 @@
     </div>
     <div ng-if="posts.length != 0">
         <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-9 col-xs-12 panel panel-default">
+            <div ng-show="UserOwnsPage" style="position:absolute; top:3px; right:5px;">
+                <button type="button" class="close" aria-hidden="true" ng-click="deletePost(post._id)">&times;</button>
+            </div>
             <div class="col-sm-3" style="padding: 5px; text-align: center;">
                 <div class="col-sm-12">
                     <img class="img-sm" ng-src="{{ placeholderImage }}" />

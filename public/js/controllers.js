@@ -232,6 +232,17 @@ angular.module('hammer.controllers', [])
             $scope.profilePicture = $scope.placeholderImage;
         }
     }
+
+    $scope.deletePost = function(id) {
+        var username = UserService.GetCurrentUserName();
+        PostService.DeletePost(username, id)
+        .then(function successCallback(response) {
+           console.log(response.data);
+           location.reload();            
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+    }
     
     $scope.placeholderImage = "http://placekitten.com/200/200/";
     $scope.profilePicture = $scope.placeholderImage;

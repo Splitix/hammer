@@ -56,7 +56,8 @@ var User = mongoose.model('User', userSchema);
 var postSchema = new Schema({
   username: { type: String, required: true },
   body: { type: String, required: true },
-  createdOn : Date
+  createdOn : Date,
+  isactive : Boolean
 });
 
 var Post = mongoose.model('Post', postSchema);
@@ -182,14 +183,14 @@ app.get('/allPosts', function(req, res) {
         {
             // Include self posts in the filter, do not save yourself into following
             user.following.push(req.query.username);
-            Post.find({username: { $in: user.following } }, function(err, posts) {
+            Post.find({ username: { $in: user.following }, isactive: true  }, function(err, posts) {
                 res.send(
                     posts.sort(function(a, b) { return a.createdOn < b.createdOn })
                 );
             });
         }
         else {
-            Post.find({}, function(err, posts) {
+            Post.find({ isactive: true }, function(err, posts) {
                 res.send(
                     posts.sort(function(a, b) { return a.createdOn < b.createdOn })
                 );
@@ -199,7 +200,7 @@ app.get('/allPosts', function(req, res) {
 });
 
 app.get('/userPosts', function(req, res) {
-    Post.find({ username: req.query.username }, function(err, posts) {
+    Post.find({ username: req.query.username, isactive: true }, function(err, posts) {
          res.send(
              posts.sort(function(a, b) { return a.createdOn < b.createdOn })
         );
@@ -222,10 +223,11 @@ app.post('/createPost', function(req, res) {
             else
             {
                 // Create and save new post
-                var new_post = new Post ({
+                var new_post = new Post({
                     username: req.body.username,
                     body: req.body.body,
-                    createdOn: new Date()
+                    createdOn: new Date(),
+                    isactive: true
                 });
                 
                 new_post.save();
@@ -244,6 +246,56 @@ app.post('/createPost', function(req, res) {
         var response = {
             status  : 500,
             error : 'Fatal error during Create Post.'
+        }
+        
+        res.end(JSON.stringify(response));
+    }
+});
+
+app.delete('/deletepost', function(req, res) {
+    try
+    {
+        // Check if user exists in DB
+        User.findOne({username: req.body.username}, 'username', function (err, user) {
+            if(user === null)
+            {
+                var response = {
+                    status  : 500,
+                    error : 'User not authenticated.'
+                }
+                res.end(JSON.stringify(response));
+            }
+            else
+            {
+                Post.findOne({ _id: req.body.id }, function (err, postToBeDeleted) {
+                    if(postToBeDeleted !== null)
+                    {
+                        postToBeDeleted.isactive = false;
+                        postToBeDeleted.save();
+
+                        var response = {
+                            status  : 200,
+                            success : 'Post deleted successfully'
+                        }
+                        res.end(JSON.stringify(response));
+                    }
+                    else {
+                         var response = {
+                            status  : 500,
+                            success : 'Post not found'
+                        }
+                        res.end(JSON.stringify(response));
+                    }
+                });
+            }
+        });
+    }
+    catch(err)
+    {
+        console.error(err);
+        var response = {
+            status  : 500,
+            error : 'Fatal error during Delete Post.'
         }
         
         res.end(JSON.stringify(response));
