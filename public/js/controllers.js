@@ -78,6 +78,39 @@ angular.module('hammer.controllers', [])
         return date.toLocaleTimeString() + ' ' + 
             months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
     }
+
+
+    /*********************************************
+     Post Likes
+        Initial functionality working
+        Need to do:
+        - make unique to each post
+        - allow each user to like/unlike post, adding/subtracting from like total
+        - store num of likes in database per post
+        - change heart icon to nail icon in /public/img/ folder
+     **********************************************/
+    $scope.item = {
+        nail: false
+    };
+
+    $scope.numNails = 0;
+    $scope.isNailed = false;
+    $scope.nailed = "Nailed It!"
+
+    $scope.nail = function() {
+        $scope.isNailed = !$scope.isNailed;
+        if($scope.isNailed){
+            $scope.numNails += 1;
+            //test
+            console.log("Number of nails = " + $scope.numNails + "\n");
+        }
+        else if(!$scope.isNailed && $scope.numNails > 0){
+            $scope.numNails -= 1;
+            //test
+            console.log("Number of nails = " + $scope.numNails + "\n")
+        }
+
+    }
 })
 .controller('SignInCtrl', function($scope, $state, $http, $rootScope, UserService, LoginService){
 
