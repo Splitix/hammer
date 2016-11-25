@@ -178,14 +178,14 @@ a{color:inherit;text-decoration:none}
 	left:3px;
 	width:5px;
 	bottom:6px;
-	-webkit-transform:scale(0) rotate(0);
-	        transform:scale(0) rotate(0);
+	-webkit-transform:scale(0) rotate(0deg);
+	        transform:scale(0) rotate(0deg);
 }
 .login-form .group label .icon:after{
 	top:6px;
 	right:0;
-	-webkit-transform:scale(0) rotate(0);
-	        transform:scale(0) rotate(0);
+	-webkit-transform:scale(0) rotate(0deg);
+	        transform:scale(0) rotate(0deg);
 }
 .login-form .group .check:checked + label{
 	color:#fff;
@@ -202,12 +202,12 @@ a{color:inherit;text-decoration:none}
 	        transform:scale(1) rotate(-45deg);
 }
 .login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm{
-	-webkit-transform:rotate(0);
-	        transform:rotate(0);
+	-webkit-transform:rotate(0deg);
+	        transform:rotate(0deg);
 }
 .login-html .sign-up:checked + .tab + .login-form .sign-up-htm{
-	-webkit-transform:rotate(0);
-	        transform:rotate(0);
+	-webkit-transform:rotate(0deg);
+	        transform:rotate(0deg);
 }
 
 .sign-in-htm .hr, sign-up-htm .hr{
@@ -270,4 +270,72 @@ a{color:inherit;text-decoration:none}
   color: #3596e0;
   left: initial;
   font-size: 14px;
+}
+
+
+/*Like Button*/
+
+/* need to find method to use nail images instead of glyphicon */
+/*.glyphicon {
+	background-image: url("/public/img/Nail-50.png");
+	width: 50px;
+	height: 50px;
+}*/
+.panel-footer {
+	text-align: left;
+}
+.panel-footer .btn-icon{
+	font-size: 2em;
+	margin: 0 0.5em;
+}
+.btn-icon {
+	padding: 0;
+	background: transparent;
+	border-color: transparent;
+	box-shadow: none;
+	cursor: pointer;
+	border-radius: 0;
+}
+.btn-icon {
+	padding: 0;
+	background: transparent;
+	border-color: transparent;
+	box-shadow: none;
+	cursor: pointer;
+	border-radius: 0;
+}
+.btn-icon:active,
+.btn-icon:focus {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	border-color: transparent;
+}
+.btn-icon:active {
+	-webkit-transform: scale(0.9);
+	-moz-transform: scale(0.9);
+	-ms-transform: scale(0.9);
+	-o-transform: scale(0.9);
+	transform: scale(0.9);
+}
+.btn-icon:focus {
+	outline: 0 none !important;
+}
+.btn-icon .glyphicon {
+	-webkit-transition: color 0.1s ease;
+	-moz-transition: color 0.1s ease;
+	-o-transition: color 0.1s ease;
+	transition: color 0.1s ease;
+}
+.btn-icon .glyphicon-heart {
+	color: #666666;
+}
+.btn-icon .glyphicon-heart:hover {
+	color: gray;
+}
+.btn-icon .glyphicon-heart.active {
+	color: darkorange;
+}
+.btn-icon .glyphicon-heart.active:hover {
+	color: orange;
 }
