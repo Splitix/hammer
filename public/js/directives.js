@@ -15,3 +15,20 @@ angular.module('hammer.directives', [])
         }
       }
   })
+
+.directive('buttonNailedIt', function() {
+    return {
+        scope: true,
+        restrict: 'E',
+        template: '<button class="btn btn-icon">' +
+            '<span class="glyphicon glyphicon-heart" ng-class="{active: item.nail}" ng-click="nail()"></span>' +
+            '</button>',
+        link: function(scope, elem) {
+            elem.bind('click', function() {
+                scope.$apply(function(){
+                    scope.item.nail = !scope.item.nail;
+                });
+            });
+        }
+    };
+})
