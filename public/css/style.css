@@ -296,14 +296,6 @@ a{color:inherit;text-decoration:none}
 	cursor: pointer;
 	border-radius: 0;
 }
-.btn-icon {
-	padding: 0;
-	background: transparent;
-	border-color: transparent;
-	box-shadow: none;
-	cursor: pointer;
-	border-radius: 0;
-}
 .btn-icon:active,
 .btn-icon:focus {
 	-webkit-box-shadow: none;
