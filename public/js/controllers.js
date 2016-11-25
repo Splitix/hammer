@@ -271,7 +271,7 @@ angular.module('hammer.controllers', [])
         UserService.GetAllUsers()
         .then(function successCallback(response) {
                 // Remove yourself from the list of users to follow
-                $scope.allUsers = response.data.filter(user => user.username != UserService.GetCurrentUserName());
+                $scope.allUsers = response.data.filter(user >= user.username != UserService.GetCurrentUserName());
                 $scope.loading = false;
             }, function errorCallback(response) {
                 console.log(response.data);
