@@ -34,23 +34,38 @@
         <img src="img/loading.gif" alt="LOADING..." />LOADING...
     </h2>
     <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-9 col-xs-12 panel panel-default">
-        <div class="col-sm-3" style="padding: 5px; text-align: center;">
-            <div class="col-sm-12">
-                <a href="/#/u/{{ post.username }}" class="col-sm-12" alt="{{ post.username }}">
-                    <img class="img-sm" ng-src="{{ placeholderImage }}" />
-                </a>
+        <div class="panel-body">
+            <div class="col-sm-3" style="padding: 5px; text-align: center;">
+                <div class="col-sm-12">
+                    <a href="/#/u/{{ post.username }}" class="col-sm-12" alt="{{ post.username }}">
+                        <img class="img-sm" ng-src="{{ placeholderImage }}" />
+                    </a>
+                </div>
+                <div class="col-sm-12">
+                    <a href="/#/u/{{ post.username }}" class="col-sm-12" alt="{{ post.username }}">
+                        {{ post.username }}
+                    </a>
+                </div>
             </div>
-            <div class="col-sm-12">
-                <a href="/#/u/{{ post.username }}" class="col-sm-12" alt="{{ post.username }}">
-                    {{ post.username }}
-                </a>
+            <div class="col-sm-9" style="padding: 15px;">
+                {{ post.body }}
+            </div>
+            <div style="padding-bottom: 5px; float: right;">
+                {{ formatDate(post.createdOn) }}
             </div>
         </div>
-        <div class="col-sm-9" style="padding: 15px;">
-            {{ post.body }}
-        </div>
-        <div style="padding-bottom: 5px; float: right;">
-            {{ formatDate(post.createdOn) }}
+
+        <div class="panel-footer">
+            <button-nailed-it></button-nailed-it>
+            <div ng-show="isNailed">{{ nailed }}</div>
+            <!--<button type='button' class="btn-icon btn btn-default" ng-click="doVote(currUserId)">
+
+                <a href="" class="text-center" title="Nailed it!">
+                    &lt;!&ndash;<i class="fa fa-2x" ng-class="(ply.userVotes[currUserId]==1) ? 'fa-heart' : 'fa-heart-o'"></i><br>&ndash;&gt;
+                    <i class="fa fa-2x" >
+                    <span class="slide-up" ng-bind="ply.votes">{{ply.votes}}</span>
+                </a>
+            </button>-->
         </div>
     </div>
 </div>
