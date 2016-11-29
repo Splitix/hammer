@@ -58,6 +58,7 @@ var User = mongoose.model('User', userSchema);
 var postSchema = new Schema({
   username: { type: String, required: true },
   body: { type: String, required: true },
+  num_likes: Number,
   createdOn : Date,
   isactive : Boolean
 });
@@ -318,40 +319,10 @@ app.post('/likePost', function(req, res) {
         }
         else {
             if(req.body.updatedLike) {
-                try {
-                   if(user.likes === undefined) {             
-                       user.likes = [];
-                       user.likes.push(req.body.updatedLike);
-                       user.save(function(err, user) {
-                            if (err) {
-                                console.error(err);
-                                res.send(400, 'Bad Request');
-                            }
-                        });
-
-                        var response = {
-                            status  : 200,
-                            success : 'Successfully updates uer\'s likes.'
-                        };
-                        res.end(JSON.stringify(response));
-                   }
-                   else {
-                    if(user.likes.indexOf(req.body.updatedLike) != -1) { // Unfollow
-                        user.likes = user.likes.filter(all_likes => all_likes !== req.body.updatedLike);
-                        user.save(function(err, user) {
-                            if (err) {
-                                console.error(err);
-                                res.send(400, 'Bad Request');
-                            }
-                        });
-
-                        var response = {
-                            status  : 200,
-                            success : 'Successfully updated user\'s likes.'
-                        };
-                        res.end(JSON.stringify(response));
-                    }
-                    else { // Like
+                Post.findOne({_id: req.body.updatedLike}, 'num_likes', function(err, post) {
+                    try {
+                    if(user.likes === undefined) {             
+                        user.likes = [];
                         user.likes.push(req.body.updatedLike);
                         user.save(function(err, user) {
                             if (err) {
@@ -359,23 +330,64 @@ app.post('/likePost', function(req, res) {
                                 res.send(400, 'Bad Request');
                             }
                         });
+                            
+                        post.num_likes += 1;
+                        post.save();
 
                         var response = {
                             status  : 200,
-                            success : 'Successfully updated user\'s likes.'
+                            success : 'Successfully updates user\'s likes.'
                         };
                         res.end(JSON.stringify(response));
                     }
-                   }
-                }
-                catch(exception) {
-                     console.error(exception.stack);
-                     var response = {
-                        status  : 500,
-                        error : 'Failed to update user\'s likes.'
-                    };
-                    res.end(JSON.stringify(response));
-                }
+                    else {
+                        if(user.likes.indexOf(req.body.updatedLike) != -1) { // Unlike
+                            user.likes = user.likes.filter(all_likes => all_likes !== req.body.updatedLike);
+                            user.save(function(err, user) {
+                                if (err) {
+                                    console.error(err);
+                                    res.send(400, 'Bad Request');
+                                }
+                            });
+                            
+                            post.num_likes -= 1;
+                            post.save();
+
+                            var response = {
+                                status  : 200,
+                                success : 'Successfully updated user\'s likes.'
+                            };
+                            res.end(JSON.stringify(response));
+                        }
+                        else { // Like
+                            user.likes.push(req.body.updatedLike);
+                            user.save(function(err, user) {
+                                if (err) {
+                                    console.error(err);
+                                    res.send(400, 'Bad Request');
+                                }
+                            });
+
+                            post.num_likes += 1;
+                            post.save();                        
+
+                            var response = {
+                                status  : 200,
+                                success : 'Successfully updated user\'s likes.'
+                            };
+                            res.end(JSON.stringify(response));
+                        }
+                    }
+                    }
+                    catch(exception) {
+                        console.error(exception.stack);
+                        var response = {
+                            status  : 500,
+                            error : 'Failed to update user\'s likes.'
+                        };
+                        res.end(JSON.stringify(response));
+                    }
+                });
             }
              var response = {
                 status  : 500,
