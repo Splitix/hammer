@@ -21,12 +21,16 @@ angular.module('hammer.directives', [])
         scope: true,
         restrict: 'E',
         template: '<button class="btn btn-icon">' +
-            '<span class="glyphicon glyphicon-heart" ng-class="{active: item.nail}" ng-click="nail()"></span>' +
+            '<span class="nailed-it" ng-class="{active: item.nail}" ng-click="nail()">' +
+            '<img ng-show="isNailed" style="width: 25px; height: 25px;" src="../img/Nail%20Filled-50.png">' +
+            '<img ng-show="!isNailed" style="width: 25px; height: 25px;" src="../img/Nail-50.png">' +
+            '</span>' +
             '</button>',
         link: function(scope, elem) {
             elem.bind('click', function() {
                 scope.$apply(function(){
                     scope.item.nail = !scope.item.nail;
+
                 });
             });
         }
