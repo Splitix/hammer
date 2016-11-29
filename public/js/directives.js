@@ -20,10 +20,10 @@ angular.module('hammer.directives', [])
     return {
         scope: true,
         restrict: 'E',
-        template: '<button class="btn btn-icon">' +
-            '<span class="nailed-it" ng-class="{active: item.nail}" ng-click="nail()">' +
-            '<img ng-show="isNailed" style="width: 25px; height: 25px;" src="../img/Nail%20Filled-50.png">' +
-            '<img ng-show="!isNailed" style="width: 25px; height: 25px;" src="../img/Nail-50.png">' +
+        template: '<button class="btn btn-icon" id="nailBtn">' +
+            '<span id="nailSpan" class="nailed-it" ng-class="{active: item.nail}" ng-click="nail()">' +
+            '<img ng-show="isNailed" id="filledNail" src="../img/Nail%20Filled-50.png">' +
+            '<img ng-show="!isNailed" id="unfilledNail" src="../img/Nail-50.png">' +
             '</span>' +
             '</button>',
         link: function(scope, elem) {
