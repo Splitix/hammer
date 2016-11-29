@@ -48,7 +48,9 @@ var userSchema = new Schema({
   password: { type: String, required: true },
   admin: Boolean,
   imageuri: String,
-  following: [{ type: String }]
+  following: [{ type: String }],
+  likes: [{ type: String }]
+  
 });
 
 var User = mongoose.model('User', userSchema);
@@ -82,7 +84,8 @@ app.post('/signup', function(req, res) {
                         password: encryptPassword(req.body.password),
                         admin: false,
                         imageuri: req.body.imageUri,
-                        following: []
+                        following: [],
+                        likes: []
                     });
                     
                     new_user.save();
@@ -252,7 +255,7 @@ app.post('/createPost', function(req, res) {
     }
 });
 
-app.delete('/deletepost', function(req, res) {
+app.delete('/deletePost', function(req, res) {
     try
     {
         // Check if user exists in DB
@@ -302,6 +305,86 @@ app.delete('/deletepost', function(req, res) {
     }
 });
 
+app.post('/likePost', function(req, res) {
+    User.findOne({username: req.body.username}, 'likes', function (err, user) {
+        if(user === null)
+        {
+            var response = {
+                status  : 500,
+                error : 'User not found.'
+            }
+            res.end(JSON.stringify(response));
+            return;
+        }
+        else {
+            if(req.body.updatedLike) {
+                try {
+                   if(user.likes === undefined) {             
+                       user.likes = [];
+                       user.likes.push(req.body.updatedLike);
+                       user.save(function(err, user) {
+                            if (err) {
+                                console.error(err);
+                                res.send(400, 'Bad Request');
+                            }
+                        });
+
+                        var response = {
+                            status  : 200,
+                            success : 'Successfully updates uer\'s likes.'
+                        };
+                        res.end(JSON.stringify(response));
+                   }
+                   else {
+                    if(user.likes.indexOf(req.body.updatedLike) != -1) { // Unfollow
+                        user.likes = user.likes.filter(all_likes => all_likes !== req.body.updatedLike);
+                        user.save(function(err, user) {
+                            if (err) {
+                                console.error(err);
+                                res.send(400, 'Bad Request');
+                            }
+                        });
+
+                        var response = {
+                            status  : 200,
+                            success : 'Successfully updated user\'s likes.'
+                        };
+                        res.end(JSON.stringify(response));
+                    }
+                    else { // Like
+                        user.likes.push(req.body.updatedLike);
+                        user.save(function(err, user) {
+                            if (err) {
+                                console.error(err);
+                                res.send(400, 'Bad Request');
+                            }
+                        });
+
+                        var response = {
+                            status  : 200,
+                            success : 'Successfully updated user\'s likes.'
+                        };
+                        res.end(JSON.stringify(response));
+                    }
+                   }
+                }
+                catch(exception) {
+                     console.error(exception.stack);
+                     var response = {
+                        status  : 500,
+                        error : 'Failed to update user\'s likes.'
+                    };
+                    res.end(JSON.stringify(response));
+                }
+            }
+             var response = {
+                status  : 500,
+                error : 'Failed to update user\'s likes.'
+            };
+            res.end(JSON.stringify(response));
+        }
+    });
+});
 // Profile ==============================================
 app.post('/userInfo', function(req, res) {
     if(req.body.userOwnsPage && req.body.userOwnsPage == "true")
@@ -386,27 +469,6 @@ app.get('/following', function(req, res) {
     });
 });
 
-// Search =================================================
-app.get('/search', function(req, res) {
-    var query = new RegExp(req.query.query, "i");
-    User.find({'$or': [{ name: query }, { username: query }]}, 'username name imageuri', function (err, users) {
-        if(users !== null)
-        {
-            res.send(JSON.stringify(users));
-        }
-        else {
-            // Empty array
-            res.send("[]");
-        }
-    });
-});
-
-app.get('/users', function(req, res) {
-    User.find({}, 'name username imageuri', function (err, users) {
-        res.send(JSON.stringify(users));
-    });
-});
-
 app.post('/updateFollower', function(req, res) {
     User.findOne({username: req.body.username}, 'following', function (err, user) {
         if(user === null)
@@ -485,6 +547,27 @@ app.post('/updateFollower', function(req, res) {
             };
             res.end(JSON.stringify(response));
         }
+    });
+});
+
+// Search =================================================
+app.get('/search', function(req, res) {
+    var query = new RegExp(req.query.query, "i");
+    User.find({'$or': [{ name: query }, { username: query }]}, 'username name imageuri', function (err, users) {
+        if(users !== null)
+        {
+            res.send(JSON.stringify(users));
+        }
+        else {
+            // Empty array
+            res.send("[]");
+        }
+    });
+});
+
+app.get('/users', function(req, res) {
+    User.find({}, 'name username imageuri', function (err, users) {
+        res.send(JSON.stringify(users));
     });
 });
 

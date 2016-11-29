@@ -68,6 +68,15 @@ angular.module('hammer.controllers', [])
         });
     }
 
+    $scope.updateLike = function(LikedPostId) {
+        PostService.UpdateLike(UserService.GetCurrentUserName(), LikedPostId)
+        .then(function successCallback(response) {
+           console.log(response.data);
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
+    }
+
     $scope.formatDate = function(date) {
         var date = new Date(date);
         var months = [
