@@ -147,6 +147,14 @@ angular.module('hammer.controllers', [])
     // Check if user is signed in
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
 
+    // Checks to see if the user wants to update their info.
+    $scope.profileUpdate = false;
+    $scope.user = {};
+
+    $scope.userUpdate = function(){
+        
+    }
+
     $scope.UserOwnsPage = false;
     if($stateParams.username == undefined || $stateParams.username == "" ) {
         $scope.UserOwnsPage = true;

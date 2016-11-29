@@ -20,6 +20,35 @@
             <div class="col-sm-12" ng-if="UserInfo.email">
                 <span style="font-weight: bold;">Private Email:</span> {{ UserInfo.email }}
             </div>
+            <div class="col-sm-12">
+                <br/>
+                <button class="btn btn-primary" ng-click="profileUpdate=!profileUpdate" ng-show="!profileUpdate">Update User Info</button>
+            </div>
+            <div class="col-sm-12" ng-if="profileUpdate">
+                <!-- Allows the user to update the DB with the new Infomation -->
+                <div class="sign-up-htm">
+                    <form ng-submit="userUpdate()">
+                        <div class="group">
+                            <span class="left">Full Name:</span>
+                            
+                                <input id="user" ng-model="user.name" type="text" class="input">
+                            
+                        
+                            <span class="left">Email:</span>
+                            
+                                <input id="pass" ng-model="user.email" type="text" class="input">
+                            
+                        
+                            <span class="left">Profile Image:</span>
+                            
+                                <input id="pass" ng-model="user.imageuri" type="text" class="input">
+                            
+                    
+                            <input type="submit" class="button" value="Save">
+                        </div>
+                    </form>
+                </div>
+            </div>
             <span ng-if="!UserOwnsPage">
                 <div class="col-sm-12">
                     <button class="btn btn-primary" style="margin-top: 10px;" ng-click="updateFollower(UserInfo.username)">

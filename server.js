@@ -251,6 +251,12 @@ app.post('/createPost', function(req, res) {
 });
 
 // Profile ==============================================
+app.post('/updateUser', function(req, res) {
+    User.updateUser({username: req.body.username}, 'name', function(){
+        
+    })
+});
+
 app.post('/userInfo', function(req, res) {
     if(req.body.userOwnsPage && req.body.userOwnsPage == "true")
     {

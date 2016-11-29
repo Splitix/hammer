@@ -271,3 +271,11 @@ a{color:inherit;text-decoration:none}
   left: initial;
   font-size: 14px;
 }
+
+.left{
+	float: left;
+}
+
+.right{
+	float: right;
+}
