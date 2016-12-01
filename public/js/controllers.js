@@ -93,9 +93,10 @@ angular.module('hammer.controllers', [])
      Post Likes
         Initial functionality working
         Need to do:
-        - make unique to each post (currently likes all posts...lol)
+        - make unique to each user and post (currently likes all posts...lol)
         - allow each user to like/unlike post, adding/subtracting from like total
         - store num of likes in database per post
+        - show post likes on user profile page
      **********************************************/
     $scope.item = {
         nail: false
