@@ -27,23 +27,14 @@
             <div class="col-sm-12" ng-if="profileUpdate">
                 <!-- Allows the user to update the DB with the new Infomation -->
                 <div class="sign-up-htm">
-                    <form ng-submit="userUpdate()">
+                    <form ng-submit="updateUser()">
                         <div class="group">
                             <span class="left">Full Name:</span>
-                            
-                                <input id="user" ng-model="user.name" type="text" class="input">
-                            
-                        
+                                <input id="user" ng-value="user.name" ng-model="UpdatedInfo.name" type="text" class="input">
                             <span class="left">Email:</span>
-                            
-                                <input id="pass" ng-model="user.email" type="text" class="input">
-                            
-                        
+                                <input id="pass" ng-value="user.email" ng-model="UpdatedInfo.email" type="text" class="input">
                             <span class="left">Profile Image:</span>
-                            
-                                <input id="pass" ng-model="user.imageuri" type="text" class="input">
-                            
-                    
+                                <input id="pass" ng-value="user.imageuri" ng-model="UpdatedInfo.imageuri" type="text" class="input">
                             <input type="submit" class="button" value="Save">
                         </div>
                     </form>

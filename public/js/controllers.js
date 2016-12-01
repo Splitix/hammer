@@ -226,6 +226,16 @@ angular.module('hammer.controllers', [])
         });
     }
 
+    $scope.updateUser = function() {
+        UserService.UpdateUser(UserService.GetCurrentUserName(), $scope.UpdatedInfo.name, $scope.UpdatedInfo.email, $scope.UpdatedInfo.imageuri)
+        .then(function successCallback(response) {
+           console.log(response.data);
+            location.reload();            
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
+    }
+
     $scope.previewFile = function() {
         var file    = document.querySelector('input[type=file]').files[0]; //same as here
         var reader  = new FileReader();
@@ -247,6 +257,7 @@ angular.module('hammer.controllers', [])
 
     $scope.posts = [];
     $scope.UserInfo = {};
+    $scope.UpdatedInfo = {};
 
     var u = UserService.GetCurrentUserName();
     if($stateParams.username && $stateParams.username != "") {

@@ -251,9 +251,26 @@ app.post('/createPost', function(req, res) {
 });
 
 // Profile ==============================================
-app.post('/updateUser', function(req, res) {
-    User.updateUser({username: req.body.username}, 'name', function(){
-        
+app.put('/updateUser', function(req, res) {
+    User.findOne({username: req.body.username}, 'name email imageuri', function(err, user) {
+        if(req.body.name != '')
+            user.name = req.body.name;
+        if(req.body.name != '')
+            user.email = req.body.email;
+        if(req.body.name != '')        
+            user.imageuri = req.body.imageuri;
+        user.save(function(err, user) {
+            if (err) {
+                console.error(err);
+                res.send(400, 'Bad Request');
+            }
+        });
+
+        var response = {
+            status  : 200,
+            success : 'Successfully updated user\'s information.'
+        };
+        res.end(JSON.stringify(response));
     })
 });
 

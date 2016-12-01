@@ -69,6 +69,15 @@ angular.module('hammer.services', ['ngCookies'])
         });
     }
 
+    this.UpdateUser = function(currentUsername, name, email, imageuri) {
+        return $http({
+            method  : 'PUT',
+            url     : '/updateUser',
+            data    : $.param({username: currentUsername, name: name, email: email, imageuri: imageuri}),
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+    }
+
      this.UpdateFollower = function(currentUsername, updatedFollow) {
         return $http({
             method  : 'POST',
