@@ -3,7 +3,7 @@ angular.module('hammer.controllers', [])
 .controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService, $location){
     $scope.searchForm = {};
     
-    $scope.placeholderImage = "http://placekitten.com/200/200/";
+    $scope.placeholderImage = "http://placekitten.com/201/201/";
     
     // Check if user is signed in    
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
@@ -23,11 +23,11 @@ angular.module('hammer.controllers', [])
                 {body: "Here are some sample posts because there weren't any in the database.", name: "Blake Bordovsky", imageUri : "http://placekitten.com/100/200/"},
                 {body: "We'll throw some old gray clouds in here just sneaking around and having fun. Tree trunks grow however makes them happy. That's what painting is all about. It should make you feel good when you paint. Just pretend you are a whisper floating across a mountain. We need dark in order to show light. With something so strong, a little bit can go a long way.",
                 name: "Bob Ross", imageUri : "http://www.bobrosslipsum.com/images/bob-ross-cutout.png"},
-                {body: "Hammer is super cool.", name: "Joshua Galindo", imageUri : "http://placekitten.com/200/200/"},
-                {body: "Testing out this user post.", name: "Blake Bordovsky", imageUri : "http://placekitten.com/200/200/"},
-                {body: "The chicken noodles in Harris Hall were satisfactory.", name: "Jason Flinn", imageUri : "http://placekitten.com/200/200/"},
-                {body: "San Marcos is flooding super bad right now!", name: "Blake Bordovsky", imageUri : "http://placekitten.com/200/200/"},
-                {body: "Project Hammer is using the MEAN stack.", name: "Joshua Galindo", imageUri : "http://placekitten.com/200/200/"}];
+                {body: "Hammer is super cool.", name: "Joshua Galindo", imageUri : "http://placekitten.com/201/201/"},
+                {body: "Testing out this user post.", name: "Blake Bordovsky", imageUri : "http://placekitten.com/201/201/"},
+                {body: "The chicken noodles in Harris Hall were satisfactory.", name: "Jason Flinn", imageUri : "http://placekitten.com/201/201/"},
+                {body: "San Marcos is flooding super bad right now!", name: "Blake Bordovsky", imageUri : "http://placekitten.com/201/201/"},
+                {body: "Project Hammer is using the MEAN stack.", name: "Joshua Galindo", imageUri : "http://placekitten.com/201/201/"}];
             }
         }, function errorCallback(response) {
             // called asynchronously if an error occurs
@@ -286,7 +286,7 @@ angular.module('hammer.controllers', [])
         });
     }
     
-    $scope.placeholderImage = "http://placekitten.com/200/200/";
+    $scope.placeholderImage = "http://placekitten.com/201/201/";
     $scope.profilePicture = $scope.placeholderImage;
     $scope.NoPostsName = "This user";
 
@@ -354,7 +354,7 @@ angular.module('hammer.controllers', [])
         });
     }
 
-    $scope.placeholderImage = "http://placekitten.com/200/200/";
+    $scope.placeholderImage = "http://placekitten.com/201/201/";
     
     $scope.following = {};
     $scope.allUsers = {};
@@ -378,7 +378,7 @@ angular.module('hammer.controllers', [])
 })
 .controller('SearchCtrl', function($scope, $state, $http, UserService, $location){
 
-    $scope.placeholderImage = "http://placekitten.com/200/200/";
+    $scope.placeholderImage = "http://placekitten.com/201/201/";
 
     $scope.search = function() {
         $scope.loading = true;        
