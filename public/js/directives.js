@@ -27,9 +27,12 @@ angular.module('hammer.directives', [])
             '</span>' +
             '</button>',
         link: function(scope, elem) {
+
+            scope.loadNail(scope.post, elem);
+
             elem.bind('click', function() {
                 scope.$apply(function(){
-                    scope.nail(scope.post._id);
+                    scope.nail(scope.post, elem);
                 });
             });
         }

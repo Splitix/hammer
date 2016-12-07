@@ -68,15 +68,6 @@ angular.module('hammer.controllers', [])
         });
     }
 
-    $scope.updateLike = function(LikedPostId) {
-        PostService.UpdateLike(UserService.GetCurrentUserName(), LikedPostId)
-        .then(function successCallback(response) {
-           console.log(response.data);
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
-    }
-
     $scope.formatDate = function(date) {
         var date = new Date(date);
         var months = [
@@ -93,23 +84,54 @@ angular.module('hammer.controllers', [])
      Post Likes
         Initial functionality working
         Need to do:
-        - make unique to each user and post (currently likes all posts...lol)
+        ✓ make unique to each user and post (currently likes all posts...lol)
         ✓ allow each user to like/unlike post, adding/subtracting from like total
         ✓ store num of likes in database per post
+        - show num of likeson each post
         - show post likes on user profile page
      **********************************************/
     
-    $scope.nail = function(id) {
-        PostService.LikePost(UserService.GetCurrentUserName, id)
+    $scope.loadNail = function(post, elem){
+        if(!jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like))
+        {
+            $scope.swapImage(elem);
+        }
+    }
+
+    $scope.nail = function(post, elem) {
+        var username = UserService.GetCurrentUserName;
+        PostService.LikePost(username, post._id)
         .success(function(data){
-            console.log(data);
+            if(data.status == 201) {
+                post.users_with_like.push(username);
+            }
+            else {
+                post.users_with_like = post.users_with_like.filter(allPosts => allPosts != username);
+            }
+
+            post.num_likes = post.users_with_like.length;
+
+            $scope.swapImage(elem);
         }).error(function(err){
             console.log("Like Error:", err);
         });
     }
 
+    $scope.swapImage = function(elem) {
+        var nailFilled = "../img/Nail-Filled-50.png";
+        var nailEmpty = "../img/Nail-50.png";
 
+        var img = elem.find('img');
+
+        if (!$(img).hasClass('nailed-it-img')) {
+            $(img).attr('src', nailFilled);
+            $(img).addClass('nailed-it-img')   
+        } else  {
+            $(img).attr('src', nailEmpty);
+            $(img).removeClass('nailed-it-img');
+        }
     }
+    $scope.nailedMsg = "Nailed it!";
 })
 .controller('SignInCtrl', function($scope, $state, $http, $rootScope, UserService, LoginService){
 

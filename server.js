@@ -297,7 +297,6 @@ app.post('/likePost', function (req, res) {
         }
         if (req.body.postId) {
             Post.findOne({ _id: req.body.postId }, 'num_likes users_with_like', function (err, post) {
-                console.error(post);
                 try {
                     if (post.users_with_like.indexOf(req.body.username) == -1) {   // Like
 
@@ -306,7 +305,7 @@ app.post('/likePost', function (req, res) {
                         post.save();
 
                         var response = {
-                            status: 200,
+                            status: 201,
                             success: 'Successfully updates user\'s likes.'
                         };
                         res.end(JSON.stringify(response));
@@ -317,7 +316,7 @@ app.post('/likePost', function (req, res) {
                         post.save();
 
                         var response = {
-                            status: 200,
+                            status: 202,
                             success: 'Successfully updated user\'s likes.'
                         };
                         res.end(JSON.stringify(response));
