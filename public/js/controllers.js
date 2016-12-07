@@ -94,30 +94,20 @@ angular.module('hammer.controllers', [])
         Initial functionality working
         Need to do:
         - make unique to each user and post (currently likes all posts...lol)
-        - allow each user to like/unlike post, adding/subtracting from like total
-        - store num of likes in database per post
+        ✓ allow each user to like/unlike post, adding/subtracting from like total
+        ✓ store num of likes in database per post
         - show post likes on user profile page
      **********************************************/
-    $scope.item = {
-        nail: false
-    };
+    
+    $scope.nail = function(id) {
+        PostService.LikePost(UserService.GetCurrentUserName, id)
+        .success(function(data){
+            console.log(data);
+        }).error(function(err){
+            console.log("Like Error:", err);
+        });
+    }
 
-    $scope.numNails = 0;
-    $scope.isNailed = false;
-    $scope.nailed = "Nailed It!"
-
-    $scope.nail = function() {
-        $scope.isNailed = !$scope.isNailed;
-        if($scope.isNailed){
-            $scope.numNails += 1;
-            //test
-            console.log("Number of nails = " + $scope.numNails + "\n");
-        }
-        else if(!$scope.isNailed && $scope.numNails > 0){
-            $scope.numNails -= 1;
-            //test
-            console.log("Number of nails = " + $scope.numNails + "\n")
-        }
 
     }
 })
@@ -393,14 +383,6 @@ angular.module('hammer.controllers', [])
             console.log(err);
         });
     }
-
+    
     $scope.search();
-
 });
-
-
-
-
-
-
-

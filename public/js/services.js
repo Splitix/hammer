@@ -116,11 +116,11 @@ angular.module('hammer.services', ['ngCookies'])
         });
     }
 
-    this.UpdateLike = function(currentUsername, updatedLike) {
+    this.LikePost = function(currentUsername, postId) {
         return $http({
             method  : 'POST',
-            url     : '/updateLike',
-            data    : $.param({username: currentUsername, updatedLike: updatedLike}),
+            url     : '/likePost',
+            data    : $.param({username: currentUsername, postId: postId}),
             headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
