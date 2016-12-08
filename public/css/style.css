@@ -320,3 +320,19 @@ a{color:inherit;text-decoration:none}
 .custom-cursor {
 	cursor: url(../img/hammer-cursor.gif) 10 20, auto;
 }
+
+div.removed-item {
+	animation: removed-item-animation .6s cubic-bezier(.55,-0.04,.91,.94) forwards;
+}
+
+@keyframes removed-item-animation {
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	to {
+		opacity: 0;
+		transform: scale(0);
+	}
+}
