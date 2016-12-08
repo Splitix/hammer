@@ -30,7 +30,7 @@ app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 // Mongoose stuff ===========================================
 // connect to our mongoDB database
-mongoose.connect('mongodb://joshuagalindo.com/hammer');
+mongoose.connect('mongodb://localhost:27017/hammer');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

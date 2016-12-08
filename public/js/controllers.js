@@ -58,12 +58,15 @@ angular.module('hammer.controllers', [])
     $scope.createPost = function() {
         PostService.CreatePost($scope.testPostFormData)
         .success(function(data) {
-            if(data.status == 200) {
+            if(data.status == 500) {
+                alert(data.error);
+            }
+            else if(data.status == 200) {
                 console.log(data.success);
                 location.reload();
             }
             else {
-                console.log(data.error);
+                alert(data.error);
             }
         });
     }
@@ -92,21 +95,25 @@ angular.module('hammer.controllers', [])
         var username = UserService.GetCurrentUserName();
         PostService.LikePost(username, post._id)
         .success(function(data){
-            if(data.status == 201) {
-                post.users_with_like.push(username);
+           if(data.status == 500) {
+                alert(data.error);
             }
             else {
-                post.users_with_like = post.users_with_like.filter(allPosts => allPosts != username);
+                if(data.status == 201) {
+                    post.users_with_like.push(username);
+                }
+                else {
+                    post.users_with_like = post.users_with_like.filter(allPosts => allPosts != username);
+                }
+
+                post.num_likes = post.users_with_like.length;
+
+                $scope.swapImage(elem);
+
+                $(elem).find('.nailed-msg').addClass('bounceIn');
             }
-
-            post.num_likes = post.users_with_like.length;
-
-            $scope.swapImage(elem);
-
-            $(elem).find('.nailed-msg').addClass('bounceIn');
-            
         }).error(function(err){
-            console.log("Like Error:", err);
+            alert(err);
         });
     }
 
@@ -145,7 +152,10 @@ angular.module('hammer.controllers', [])
     //After the user is redirected to the dashboard screen
     $scope.signIn = function() {
         LoginService.Signin($scope.userLogin).success(function(data){
-            if(data.status == 200)
+            if(data.status == 500) {
+                alert(data.error);
+            }
+            else if(data.status == 200)
             {
                 LoginService.SetToken(data.token, $scope.userLogin.username);
                 $state.go('dash');
@@ -167,7 +177,10 @@ angular.module('hammer.controllers', [])
     $scope.signUp = function() {
         if($scope.registerUser.password === $scope.registerUser.passwordConfirm){
             LoginService.SignUp($scope.registerUser).success(function(data){
-                if(data.status == 200)
+                if(data.status == 500) {
+                    alert(data.error);
+                }
+                else if(data.status == 200)
                 {
                     LoginService.SetToken(data.token, $scope.registerUser.username);
                     $state.go('dash');
@@ -327,19 +340,23 @@ angular.module('hammer.controllers', [])
         var username = UserService.GetCurrentUserName();
         PostService.LikePost(username, post._id)
         .success(function(data){
-            if(data.status == 201) {
-                post.users_with_like.push(username);
+            if(data.status == 500) {
+                alert(data.error);
             }
             else {
-                post.users_with_like = post.users_with_like.filter(allPosts => allPosts != username);
+                if(data.status == 201) {
+                    post.users_with_like.push(username);
+                }
+                else {
+                    post.users_with_like = post.users_with_like.filter(allPosts => allPosts != username);
+                }
+
+                post.num_likes = post.users_with_like.length;
+
+                $scope.swapImage(elem);
+
+                $(elem).find('.nailed-msg').addClass('bounceIn');
             }
-
-            post.num_likes = post.users_with_like.length;
-
-            $scope.swapImage(elem);
-
-            $(elem).find('.nailed-msg').addClass('bounceIn');
-
         }).error(function(err){
             console.log("Like Error:", err);
         });
