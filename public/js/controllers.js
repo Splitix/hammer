@@ -3,7 +3,7 @@ angular.module('hammer.controllers', [])
 .controller('DashCtrl', function($scope, $state, $http, $rootScope, UserService, PostService, $location){
     $scope.searchForm = {};
     
-    $scope.placeholderImage = "http://placekitten.com/201/201/";
+    $scope.placeholderImage = "http://img15.deviantart.net/7a8c/i/2012/226/7/8/christmas_kittens_by_mskrissi87-d5b53bq.jpg";
     
     // Check if user is signed in    
     $rootScope.IsUserSignedIn = UserService.IsUserSignedIn();
@@ -311,7 +311,7 @@ angular.module('hammer.controllers', [])
         });
     }
     
-    $scope.placeholderImage = "http://placekitten.com/201/201/";
+    $scope.placeholderImage = "http://img15.deviantart.net/7a8c/i/2012/226/7/8/christmas_kittens_by_mskrissi87-d5b53bq.jpg";
     $scope.profilePicture = $scope.placeholderImage;
     $scope.NoPostsName = "This user";
 
@@ -436,7 +436,7 @@ angular.module('hammer.controllers', [])
         });
     }
 
-    $scope.placeholderImage = "http://placekitten.com/201/201/";
+    $scope.placeholderImage = "http://img15.deviantart.net/7a8c/i/2012/226/7/8/christmas_kittens_by_mskrissi87-d5b53bq.jpg";
     
     $scope.following = {};
     $scope.allUsers = {};
@@ -460,7 +460,7 @@ angular.module('hammer.controllers', [])
 })
 .controller('SearchCtrl', function($scope, $state, $http, UserService, $location){
 
-    $scope.placeholderImage = "http://placekitten.com/201/201/";
+    $scope.placeholderImage = "http://img15.deviantart.net/7a8c/i/2012/226/7/8/christmas_kittens_by_mskrissi87-d5b53bq.jpg";
 
     $scope.search = function() {
         $scope.loading = true;        
