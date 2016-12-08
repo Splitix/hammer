@@ -178,14 +178,14 @@ a{color:inherit;text-decoration:none}
 	left:3px;
 	width:5px;
 	bottom:6px;
-	-webkit-transform:scale(0) rotate(0);
-	        transform:scale(0) rotate(0);
+	-webkit-transform:scale(0) rotate(0deg);
+	        transform:scale(0) rotate(0deg);
 }
 .login-form .group label .icon:after{
 	top:6px;
 	right:0;
-	-webkit-transform:scale(0) rotate(0);
-	        transform:scale(0) rotate(0);
+	-webkit-transform:scale(0) rotate(0deg);
+	        transform:scale(0) rotate(0deg);
 }
 .login-form .group .check:checked + label{
 	color:#fff;
@@ -202,12 +202,12 @@ a{color:inherit;text-decoration:none}
 	        transform:scale(1) rotate(-45deg);
 }
 .login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm{
-	-webkit-transform:rotate(0);
-	        transform:rotate(0);
+	-webkit-transform:rotate(0deg);
+	        transform:rotate(0deg);
 }
 .login-html .sign-up:checked + .tab + .login-form .sign-up-htm{
-	-webkit-transform:rotate(0);
-	        transform:rotate(0);
+	-webkit-transform:rotate(0deg);
+	        transform:rotate(0deg);
 }
 
 .sign-in-htm .hr, sign-up-htm .hr{
@@ -270,4 +270,69 @@ a{color:inherit;text-decoration:none}
   color: #3596e0;
   left: initial;
   font-size: 14px;
+}
+
+
+/*Like Button*/
+.panel-footer {
+	text-align: left;
+}
+.panel-footer .btn-icon {
+	font-size: 1em;
+	margin: 0 0.5em;
+}
+.btn-icon {
+	padding: 0;
+	background: transparent;
+	border-color: transparent;
+	box-shadow: none;
+	cursor: pointer;
+	border-radius: 0;
+}
+.btn-icon:active,
+.btn-icon:focus {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	border-color: transparent;
+}
+.btn-icon:active {
+	-webkit-transform: scale(0.9);
+	-moz-transform: scale(0.9);
+	-ms-transform: scale(0.9);
+	-o-transform: scale(0.9);
+	transform: scale(0.9);
+}
+.btn-icon:focus {
+	outline: 0 none !important;
+}
+.nailed-it-img {
+	margin-right: 30px;
+}
+.filledNail {
+	width: 25px;
+	height: 25px;
+}
+.nail-likes {
+	text-align: right;
+	padding: 20px;
+}
+.custom-cursor {
+	cursor: url(../img/hammer-cursor.gif) 10 20, auto;
+}
+
+div.removed-item {
+	animation: removed-item-animation .6s cubic-bezier(.55,-0.04,.91,.94) forwards;
+}
+
+@keyframes removed-item-animation {
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	to {
+		opacity: 0;
+		transform: scale(0);
+	}
 }

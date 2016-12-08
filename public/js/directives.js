@@ -15,3 +15,26 @@ angular.module('hammer.directives', [])
         }
       }
   })
+
+.directive('buttonNailedIt', function() {
+    return {
+        require: "?ngModel",        
+        scope: true,
+        restrict: 'E',
+        template: 
+            '<button class="btn btn-icon nailBtn" style="text-align: center; padding: 5px;">' +
+                '<img class="filledNail custom-cursor" src="../img/Nail-50.png">' +
+                '<div class="nailed-msg animated bounceIn" style="display: none;">Nailed it!</div>' +
+            '</button>',
+        link: function(scope, elem) {
+
+            scope.loadNail(scope.post, elem);
+
+            elem.bind('click', function() {
+                scope.$apply(function(){
+                    scope.nail(scope.post, elem);
+                });
+            });
+        }
+    };
+})

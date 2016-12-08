@@ -57,23 +57,29 @@
         </div>
     </div>
     <div ng-if="posts.length != 0">
-        <div ng-repeat="post in posts | orderBy:'createdOn':true" class="col-sm-9 col-xs-12 panel panel-default">
-            <div ng-show="UserOwnsPage" style="position:absolute; top:3px; right:5px;">
-                <button type="button" class="close" aria-hidden="true" ng-click="deletePost(post._id)">&times;</button>
-            </div>
-            <div class="col-sm-3" style="padding: 5px; text-align: center;">
-                <div class="col-sm-12">
-                    <img class="img-sm" ng-src="{{ placeholderImage }}" />
+        <div ng-repeat="post in posts | orderBy:'createdOn':true" id='post' class="col-sm-9 col-xs-12 panel panel-default">
+            <div class="panel-body">
+                <div ng-show="UserOwnsPage" style="position:absolute; top:3px; right:5px;">
+                    <button type="button" class="close" aria-hidden="true" ng-click="deletePost(post._id)">&times;</button>
                 </div>
-                <div class="col-sm-12">
-                    {{ post.username }}
+                <div class="col-sm-3" style="padding: 5px; text-align: center;">
+                    <div class="col-sm-12">
+                        <img class="img-sm" ng-src="{{ placeholderImage }}" />
+                    </div>
+                    <div class="col-sm-12">
+                        {{ post.username }}
+                    </div>
+                </div>
+                <div class="col-sm-9" style="padding: 15px;">
+                    {{ post.body }}
+                </div>
+                <div style="padding-bottom: 5px; float: right;">
+                    {{ formatDate(post.createdOn) }}
                 </div>
             </div>
-            <div class="col-sm-9" style="padding: 15px;">
-                {{ post.body }}
-            </div>
-            <div style="padding-bottom: 5px; float: right;">
-                {{ formatDate(post.createdOn) }}
+            <div class="panel-footer row">
+                <x-button-nailed-it class="col-sm-2" style="vertical-align: center;" ng-model="post"></x-button-nailed-it>
+                <div class="col-sm-offset-4 col-sm-6 nail-likes">{{ peopleNailedThis(post.num_likes) }}</div>
             </div>
         </div>
     </div>

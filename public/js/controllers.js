@@ -78,6 +78,59 @@ angular.module('hammer.controllers', [])
         return date.toLocaleTimeString() + ' ' + 
             months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
     }
+    
+    $scope.loadNail = function(post, elem){
+        if(jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like) > -1) {
+            $scope.swapImage(elem);
+            if ($(elem).find('img').hasClass('nailed-it-img')) {
+                $(elem).find('.nailed-msg').removeClass('bounceIn');
+            }
+        }
+    }
+
+    $scope.nail = function(post, elem) {
+        var username = UserService.GetCurrentUserName();
+        PostService.LikePost(username, post._id)
+        .success(function(data){
+            if(data.status == 201) {
+                post.users_with_like.push(username);
+            }
+            else {
+                post.users_with_like = post.users_with_like.filter(allPosts => allPosts != username);
+            }
+
+            post.num_likes = post.users_with_like.length;
+
+            $scope.swapImage(elem);
+
+            $(elem).find('.nailed-msg').addClass('bounceIn');
+            
+        }).error(function(err){
+            console.log("Like Error:", err);
+        });
+    }
+
+    $scope.swapImage = function(elem) {
+        var nailFilled = "../img/Nail-Filled-50.png";
+        var nailEmpty = "../img/Nail-50.png";
+
+        var img = elem.find('img');
+
+        if (!$(img).hasClass('nailed-it-img')) {
+            $(img).attr('src', nailFilled);
+            $(img).addClass('nailed-it-img');
+        } else  {
+            $(img).attr('src', nailEmpty);
+            $(img).removeClass('nailed-it-img');
+        }
+
+        $(elem).find('.nailed-msg').toggle();
+    }
+
+    $scope.peopleNailedThis = function(numPeople) {
+        if(!numPeople || numPeople == 0) return;
+        else return numPeople == 1 ? "1 person nailed this." : numPeople + " people nailed this.";
+    }
 })
 .controller('SignInCtrl', function($scope, $state, $http, $rootScope, UserService, LoginService){
 
@@ -218,23 +271,24 @@ angular.module('hammer.controllers', [])
         });
     }
 
-    $scope.previewFile = function() {
-        var file    = document.querySelector('input[type=file]').files[0]; //same as here
-        var reader  = new FileReader();
+    // $scope.previewFile = function() {
+    //     var file    = document.querySelector('input[type=file]').files[0]; //same as here
+    //     var reader  = new FileReader();
 
-        reader.onloadend = function () {
-            $scope.profilePicture = reader.result;               
-        }
+    //     reader.onloadend = function () {
+    //         $scope.profilePicture = reader.result;               
+    //     }
 
-        if (file) {
-            reader.readAsDataURL(file); //reads the data as a URL
-        } else {
-            $scope.profilePicture = $scope.placeholderImage;
-        }
-    }
+    //     if (file) {
+    //         reader.readAsDataURL(file); //reads the data as a URL
+    //     } else {
+    //         $scope.profilePicture = $scope.placeholderImage;
+    //     }
+    // }
 
     $scope.deletePost = function(id) {
         var username = UserService.GetCurrentUserName();
+        $('#post').addClass('removed-item');
         PostService.DeletePost(username, id)
         .then(function successCallback(response) {
            console.log(response.data);
@@ -259,6 +313,59 @@ angular.module('hammer.controllers', [])
     $scope.getUserInfo(u, $scope.UserOwnsPage);
     $scope.getFollowing();    
     $scope.getPosts(u);
+
+    $scope.loadNail = function(post, elem){
+        if(jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like) > -1) {
+            $scope.swapImage(elem);
+            if ($(elem).find('img').hasClass('nailed-it-img')) {
+                $(elem).find('.nailed-msg').removeClass('bounceIn');
+            }
+        }
+    }
+
+    $scope.nail = function(post, elem) {
+        var username = UserService.GetCurrentUserName();
+        PostService.LikePost(username, post._id)
+        .success(function(data){
+            if(data.status == 201) {
+                post.users_with_like.push(username);
+            }
+            else {
+                post.users_with_like = post.users_with_like.filter(allPosts => allPosts != username);
+            }
+
+            post.num_likes = post.users_with_like.length;
+
+            $scope.swapImage(elem);
+
+            $(elem).find('.nailed-msg').addClass('bounceIn');
+
+        }).error(function(err){
+            console.log("Like Error:", err);
+        });
+    }
+
+    $scope.swapImage = function(elem) {
+        var nailFilled = "../img/Nail-Filled-50.png";
+        var nailEmpty = "../img/Nail-50.png";
+
+        var img = elem.find('img');
+
+        if (!$(img).hasClass('nailed-it-img')) {
+            $(img).attr('src', nailFilled);
+            $(img).addClass('nailed-it-img');
+        } else  {
+            $(img).attr('src', nailEmpty);
+            $(img).removeClass('nailed-it-img');
+        }
+
+        $(elem).find('.nailed-msg').toggle();
+    }
+
+    $scope.peopleNailedThis = function(numPeople) {
+        if(!numPeople || numPeople == 0) return;
+        else return numPeople == 1 ? "1 person nailed this." : numPeople + " people nailed this.";
+    }
     
 })
 .controller('FollowCtrl', function($scope, $state, $http, $rootScope, UserService) {
@@ -271,7 +378,7 @@ angular.module('hammer.controllers', [])
         UserService.GetAllUsers()
         .then(function successCallback(response) {
                 // Remove yourself from the list of users to follow
-                $scope.allUsers = response.data.filter(user => user.username != UserService.GetCurrentUserName());
+                $scope.allUsers = response.data.filter(user =>   user.username != UserService.GetCurrentUserName());
                 $scope.loading = false;
             }, function errorCallback(response) {
                 console.log(response.data);
@@ -351,14 +458,6 @@ angular.module('hammer.controllers', [])
             console.log(err);
         });
     }
-
+    
     $scope.search();
-
 });
-
-
-
-
-
-
-

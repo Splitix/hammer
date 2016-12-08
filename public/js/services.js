@@ -115,4 +115,13 @@ angular.module('hammer.services', ['ngCookies'])
         headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
+
+    this.LikePost = function(currentUsername, postId) {
+        return $http({
+            method  : 'POST',
+            url     : '/likePost',
+            data    : $.param({username: currentUsername, postId: postId}),
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+    }
 });
