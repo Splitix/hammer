@@ -306,31 +306,14 @@ a{color:inherit;text-decoration:none}
 .btn-icon:focus {
 	outline: 0 none !important;
 }
-#filledNail, #unfilledNail, #nailSpan, #nailBtn {
+.nailed-it-img {
+	margin-right: 30px;
+}
+.filledNail {
 	width: 25px;
 	height: 25px;
 }
 .nail-likes {
-	padding-top: 5px;
-	margin-right: -25px;
+	text-align: right;
+	padding: 20px;
 }
-/* Style for colored heart icon
-.btn-icon .nailed-it {
-	-webkit-transition: color 0.1s ease;
-	-moz-transition: color 0.1s ease;
-	-o-transition: color 0.1s ease;
-	transition: color 0.1s ease;
-}
-.btn-icon .nailed-it {
-	color: #666666;
-}
-.btn-icon .nailed-it:hover {
-	color: gray;
-}
-.btn-icon .nailed-it.active {
-	color: darkorange;
-}
-.btn-icon .nailed-it.active:hover {
-	color: orange;
-}
-*/

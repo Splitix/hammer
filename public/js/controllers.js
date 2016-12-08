@@ -87,20 +87,18 @@ angular.module('hammer.controllers', [])
         ✓ make unique to each user and post (currently likes all posts...lol)
         ✓ allow each user to like/unlike post, adding/subtracting from like total
         ✓ store num of likes in database per post
-        - show num of likeson each post
+        - show num of likes on each post
         - show post likes on user profile page
      **********************************************/
     
     $scope.loadNail = function(post, elem){
-        if(!jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like))
-        {
+        if(!jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like)) {
             $scope.swapImage(elem);
-            post.isNailed = !post.isNailed;
         }
     }
 
     $scope.nail = function(post, elem) {
-        var username = UserService.GetCurrentUserName;
+        var username = UserService.GetCurrentUserName();
         PostService.LikePost(username, post._id)
         .success(function(data){
             if(data.status == 201) {
@@ -111,7 +109,6 @@ angular.module('hammer.controllers', [])
             }
 
             post.num_likes = post.users_with_like.length;
-            post.isNailed = !post.isNailed;
 
             $scope.swapImage(elem);
         }).error(function(err){
@@ -132,8 +129,14 @@ angular.module('hammer.controllers', [])
             $(img).attr('src', nailEmpty);
             $(img).removeClass('nailed-it-img');
         }
+
+        $(elem).find('.nailed-msg').toggle();
     }
-    $scope.nailedMsg = "Nailed it!";
+
+    $scope.peopleNailedThis = function(numPeople) {
+        if(numPeople == 0) return;
+        else return numPeople == 1 ? "1 person nailed this." : numPeople + " people nailed this.";
+    }
 })
 .controller('SignInCtrl', function($scope, $state, $http, $rootScope, UserService, LoginService){
 
@@ -371,7 +374,7 @@ angular.module('hammer.controllers', [])
         UserService.GetAllUsers()
         .then(function successCallback(response) {
                 // Remove yourself from the list of users to follow
-                $scope.allUsers = response.data.filter(user >= user.username != UserService.GetCurrentUserName());
+                $scope.allUsers = response.data.filter(user =>   user.username != UserService.GetCurrentUserName());
                 $scope.loading = false;
             }, function errorCallback(response) {
                 console.log(response.data);

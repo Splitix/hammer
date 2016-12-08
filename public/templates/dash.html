@@ -54,11 +54,9 @@
                 {{ formatDate(post.createdOn) }}
             </div>
         </div>
-
         <div class="panel-footer row">
-            <x-button-nailed-it class='col-md-1' ng-model="post"></x-button-nailed-it>
-            <div class="col-md-1 nail-likes">{{post.num_likes}}</div>
-            <div class='col-md-2 nail-likes' ng-show="post.isNailed">{{ nailedMsg }}</div>
+            <x-button-nailed-it class="col-sm-2" style="vertical-align: center;" ng-model="post"></x-button-nailed-it>
+            <div class="col-sm-offset-4 col-sm-6 nail-likes">{{ peopleNailedThis(post.num_likes) }}</div>
         </div>
     </div>
 </div>

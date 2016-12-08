@@ -21,10 +21,10 @@ angular.module('hammer.directives', [])
         require: "?ngModel",        
         scope: true,
         restrict: 'E',
-        template: '<button class="btn btn-icon" id="nailBtn">' +
-            '<span id="nailSpan" class="nailed-it" ng-class="{active: item.nail}">' +
-            '<img id="filledNail" src="../img/Nail-50.png">' +
-            '</span>' +
+        template: 
+            '<button class="btn btn-icon nailBtn" style="text-align: center; padding: 5px;">' +
+                '<img class="filledNail" src="../img/Nail-50.png">' +
+                '<div class="nailed-msg" style="display:none;">Nailed it!</div>' +
             '</button>',
         link: function(scope, elem) {
 
