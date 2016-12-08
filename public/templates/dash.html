@@ -57,8 +57,8 @@
 
         <div class="panel-footer row">
             <x-button-nailed-it class='col-md-1' ng-model="post"></x-button-nailed-it>
-            <div style="padding-top: 5px;">{{post.num_likes}}</div>
-            <div class='col-md-2' ng-show="post.isNailed">{{ nailedMsg }}</div>
+            <div class="col-md-1 nail-likes">{{post.num_likes}}</div>
+            <div class='col-md-2 nail-likes' ng-show="post.isNailed">{{ nailedMsg }}</div>
         </div>
     </div>
 </div>
