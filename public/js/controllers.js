@@ -282,6 +282,7 @@ angular.module('hammer.controllers', [])
 
     $scope.deletePost = function(id) {
         var username = UserService.GetCurrentUserName();
+        $('#post').addClass('removed-item');
         PostService.DeletePost(username, id)
         .then(function successCallback(response) {
            console.log(response.data);
