@@ -24,7 +24,7 @@ angular.module('hammer.directives', [])
         template: 
             '<button class="btn btn-icon nailBtn" style="text-align: center; padding: 5px;">' +
                 '<img class="filledNail custom-cursor" src="../img/Nail-50.png">' +
-                '<div class="nailed-msg" style="display:none;">Nailed it!</div>' +
+                '<div class="nailed-msg animated bounceIn" style="display: none;">Nailed it!</div>' +
             '</button>',
         link: function(scope, elem) {
 

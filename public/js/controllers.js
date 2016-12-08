@@ -82,6 +82,9 @@ angular.module('hammer.controllers', [])
     $scope.loadNail = function(post, elem){
         if(jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like) > -1) {
             $scope.swapImage(elem);
+            if ($(elem).find('img').hasClass('nailed-it-img')) {
+                $(elem).find('.nailed-msg').removeClass('bounceIn');
+            }
         }
     }
 
@@ -99,6 +102,9 @@ angular.module('hammer.controllers', [])
             post.num_likes = post.users_with_like.length;
 
             $scope.swapImage(elem);
+
+            $(elem).find('.nailed-msg').addClass('bounceIn');
+            
         }).error(function(err){
             console.log("Like Error:", err);
         });
@@ -311,6 +317,9 @@ angular.module('hammer.controllers', [])
     $scope.loadNail = function(post, elem){
         if(jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like) > -1) {
             $scope.swapImage(elem);
+            if ($(elem).find('img').hasClass('nailed-it-img')) {
+                $(elem).find('.nailed-msg').removeClass('bounceIn');
+            }
         }
     }
 
@@ -328,6 +337,9 @@ angular.module('hammer.controllers', [])
             post.num_likes = post.users_with_like.length;
 
             $scope.swapImage(elem);
+
+            $(elem).find('.nailed-msg').addClass('bounceIn');
+
         }).error(function(err){
             console.log("Like Error:", err);
         });
