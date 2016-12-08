@@ -78,21 +78,9 @@ angular.module('hammer.controllers', [])
         return date.toLocaleTimeString() + ' ' + 
             months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
     }
-
-
-    /*********************************************
-     Post Likes
-        Initial functionality working
-        Need to do:
-        ✓ make unique to each user and post (currently likes all posts...lol)
-        ✓ allow each user to like/unlike post, adding/subtracting from like total
-        ✓ store num of likes in database per post
-        - show num of likes on each post
-        - show post likes on user profile page
-     **********************************************/
     
     $scope.loadNail = function(post, elem){
-        if(!jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like)) {
+        if(jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like) > -1) {
             $scope.swapImage(elem);
         }
     }
@@ -277,20 +265,20 @@ angular.module('hammer.controllers', [])
         });
     }
 
-    $scope.previewFile = function() {
-        var file    = document.querySelector('input[type=file]').files[0]; //same as here
-        var reader  = new FileReader();
+    // $scope.previewFile = function() {
+    //     var file    = document.querySelector('input[type=file]').files[0]; //same as here
+    //     var reader  = new FileReader();
 
-        reader.onloadend = function () {
-            $scope.profilePicture = reader.result;               
-        }
+    //     reader.onloadend = function () {
+    //         $scope.profilePicture = reader.result;               
+    //     }
 
-        if (file) {
-            reader.readAsDataURL(file); //reads the data as a URL
-        } else {
-            $scope.profilePicture = $scope.placeholderImage;
-        }
-    }
+    //     if (file) {
+    //         reader.readAsDataURL(file); //reads the data as a URL
+    //     } else {
+    //         $scope.profilePicture = $scope.placeholderImage;
+    //     }
+    // }
 
     $scope.deletePost = function(id) {
         var username = UserService.GetCurrentUserName();
@@ -320,29 +308,26 @@ angular.module('hammer.controllers', [])
     $scope.getPosts(u);
 
     $scope.loadNail = function(post, elem){
-        if(!jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like))
-        {
+        if(jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like) > -1) {
             $scope.swapImage(elem);
-            post.isNailed = !post.isNailed;
         }
     }
 
     $scope.nail = function(post, elem) {
-        var username = UserService.GetCurrentUserName;
+        var username = UserService.GetCurrentUserName();
         PostService.LikePost(username, post._id)
-            .success(function(data){
-                if(data.status == 201) {
-                    post.users_with_like.push(username);
-                }
-                else {
-                    post.users_with_like = post.users_with_like.filter(allPosts => allPosts != username);
-                }
+        .success(function(data){
+            if(data.status == 201) {
+                post.users_with_like.push(username);
+            }
+            else {
+                post.users_with_like = post.users_with_like.filter(allPosts => allPosts != username);
+            }
 
-                post.num_likes = post.users_with_like.length;
-                post.isNailed = !post.isNailed;
+            post.num_likes = post.users_with_like.length;
 
-                $scope.swapImage(elem);
-            }).error(function(err){
+            $scope.swapImage(elem);
+        }).error(function(err){
             console.log("Like Error:", err);
         });
     }
@@ -360,8 +345,14 @@ angular.module('hammer.controllers', [])
             $(img).attr('src', nailEmpty);
             $(img).removeClass('nailed-it-img');
         }
+
+        $(elem).find('.nailed-msg').toggle();
     }
-    $scope.nailedMsg = "Nailed it!";
+
+    $scope.peopleNailedThis = function(numPeople) {
+        if(numPeople == 0) return;
+        else return numPeople == 1 ? "1 person nailed this." : numPeople + " people nailed this.";
+    }
     
 })
 .controller('FollowCtrl', function($scope, $state, $http, $rootScope, UserService) {
