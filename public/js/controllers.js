@@ -95,6 +95,7 @@ angular.module('hammer.controllers', [])
         if(!jQuery.inArray(UserService.GetCurrentUserName(), post.users_with_like))
         {
             $scope.swapImage(elem);
+            post.isNailed = !post.isNailed;
         }
     }
 
@@ -110,6 +111,7 @@ angular.module('hammer.controllers', [])
             }
 
             post.num_likes = post.users_with_like.length;
+            post.isNailed = !post.isNailed;
 
             $scope.swapImage(elem);
         }).error(function(err){
@@ -125,7 +127,7 @@ angular.module('hammer.controllers', [])
 
         if (!$(img).hasClass('nailed-it-img')) {
             $(img).attr('src', nailFilled);
-            $(img).addClass('nailed-it-img')   
+            $(img).addClass('nailed-it-img');
         } else  {
             $(img).attr('src', nailEmpty);
             $(img).removeClass('nailed-it-img');
