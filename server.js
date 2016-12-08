@@ -216,6 +216,7 @@ app.post('/createPost', function (req, res) {
                     username: req.body.username,
                     body: req.body.body,
                     createdOn: new Date(),
+                    num_likes: 0,
                     isactive: true
                 });
 

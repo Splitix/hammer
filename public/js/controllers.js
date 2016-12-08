@@ -122,7 +122,7 @@ angular.module('hammer.controllers', [])
     }
 
     $scope.peopleNailedThis = function(numPeople) {
-        if(numPeople == 0) return;
+        if(!numPeople || numPeople == 0) return;
         else return numPeople == 1 ? "1 person nailed this." : numPeople + " people nailed this.";
     }
 })
@@ -350,7 +350,7 @@ angular.module('hammer.controllers', [])
     }
 
     $scope.peopleNailedThis = function(numPeople) {
-        if(numPeople == 0) return;
+        if(!numPeople || numPeople == 0) return;
         else return numPeople == 1 ? "1 person nailed this." : numPeople + " people nailed this.";
     }
     
